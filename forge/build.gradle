@@ -12,7 +12,7 @@ architectury {
 }
 
 loom {
-    useFabricMixin = true
+    mixinConfigs = ["justenoughkeys.mixins.json"]
 }
 
 dependencies {
