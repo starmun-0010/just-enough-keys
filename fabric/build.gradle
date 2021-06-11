@@ -27,7 +27,9 @@ dependencies {
         transitive = false
     }
 }
-
+minecraft {
+    accessWidener =  file("src/main/resources/justenoughkeys.accesswidener")
+}
 processResources {
     inputs.property "version", project.version
 

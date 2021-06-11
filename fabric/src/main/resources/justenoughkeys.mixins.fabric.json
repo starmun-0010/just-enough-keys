@@ -1,11 +1,9 @@
 {
   "required": true,
-  "package": "xyz.starmun.justenoughkeys.common.mixin",
+  "package": "xyz.starmun.justenoughkeys.fabric.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "KeyEntryMixin",
-    "KeyMappingMixin",
-    "OptionsSubScreenMixin"
+    "OptionsScreenMixin"
   ],
   "client": [
   ],

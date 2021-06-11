@@ -13,6 +13,14 @@ architectury {
 
 loom {
     mixinConfigs = ["justenoughkeys.mixins.json"]
+    launches {
+        client {
+            property "fabric.log.level", "debug"
+        }
+        server {
+            property "fabric.log.level", "debug"
+        }
+    }
 }
 
 dependencies {
