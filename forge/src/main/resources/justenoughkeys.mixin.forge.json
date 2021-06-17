@@ -1,0 +1,10 @@
+{
+  "package": "xyz.starmun.justenoughkeys.forge.mixin",
+  "refmap": "mixins.justenoughkeys.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.6",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ClientRegistryMixin"
+  ]
+}

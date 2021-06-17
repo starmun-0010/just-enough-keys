@@ -1,7 +1,7 @@
 package xyz.starmun.justenoughkeys.common.contracts;
 
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.controls.ControlList;
 
 public interface IJEKOptionsSubScreenExtensions {
-    Screen jek$getLastScreen();
+   void removed();
 }
