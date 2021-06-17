@@ -5,13 +5,12 @@
   "name": "Just Enough Keys",
   "description": "Taking away your key conflicts!",
   "authors": [
-    "sttarmun"
+    "starmun"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "accessWidener" : "justenoughkeys.accesswidener",
   "license": "Insert License Here",
   "icon": "assets/justenoughkeys/icon.png",
   "environment": "*",

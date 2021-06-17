@@ -3,9 +3,11 @@
   "package": "xyz.starmun.justenoughkeys.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "KeyEntryMixin",
     "KeyMappingMixin",
-    "OptionsSubScreenMixin"
+    "OptionsSubScreenMixin",
+    "ControlsScreenMixin",
+    "OptionsMixin",
+    "MinecraftMixin"
   ],
   "client": [
   ],

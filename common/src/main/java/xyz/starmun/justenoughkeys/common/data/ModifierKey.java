@@ -42,9 +42,7 @@ public class ModifierKey {
         }
     }
 
-    public static ModifierKey fromKeyValue(int keyValue){
-        return MODIFIER_KEYS.get(keyValue);
-    }
+
     public boolean isModifierKey() {
         return ModifierKey.isModifierKey(this.value);
     }

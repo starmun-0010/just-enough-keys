@@ -12,17 +12,9 @@ import xyz.starmun.justenoughkeys.common.contracts.IJEKOptionsSubScreenExtension
 @Mixin(OptionsSubScreen.class)
 public class OptionsSubScreenMixin extends Screen implements IJEKOptionsSubScreenExtensions {
 
-    @Shadow
-    @Final
-    protected Screen lastScreen;
 
     protected OptionsSubScreenMixin(Component component) {
         super(component);
-    }
-
-    @Unique
-    public Screen jek$getLastScreen() {
-        return lastScreen;
     }
 
     @Override

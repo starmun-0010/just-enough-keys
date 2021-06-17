@@ -3,7 +3,6 @@
   "package": "xyz.starmun.justenoughkeys.fabric.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "OptionsScreenMixin"
   ],
   "client": [
   ],
