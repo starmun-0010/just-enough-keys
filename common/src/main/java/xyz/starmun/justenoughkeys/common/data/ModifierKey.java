@@ -42,7 +42,6 @@ public class ModifierKey {
         }
     }
 
-
     public boolean isModifierKey() {
         return ModifierKey.isModifierKey(this.value);
     }

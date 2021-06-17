@@ -1,6 +1,5 @@
 package xyz.starmun.justenoughkeys.fabric;
 
-import me.shedaniel.architectury.event.events.GuiEvent;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import net.fabricmc.api.ModInitializer;
 

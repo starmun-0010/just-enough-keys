@@ -16,7 +16,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.TranslatableComponent;
 import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
-import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMapping;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
@@ -44,7 +43,7 @@ public class JEKControlScreen extends ControlsScreen {
             return super.keyPressed(keyValue, scanCode, modifiers);
         }
         if (keyValue == GLFW.GLFW_KEY_ESCAPE) {
-            ((IJEKKeyMapping) selectedKey).getModifierKeyMap().clear();
+            ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().clear();
         }
         else if(selectedKey.isUnbound()){
             options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
@@ -54,15 +53,15 @@ public class JEKControlScreen extends ControlsScreen {
             ModifierKey currentModifierKey = ModifierKey.modifierKeyFromValue(currentModifierKeyValue);
             ModifierKey currentKey = ModifierKey.modifierKeyFromValue(keyValue);
             if (currentModifierKey != ModifierKey.UNKNOWN && currentKey == ModifierKey.UNKNOWN) {
-                ((IJEKKeyMapping) selectedKey).getModifierKeyMap().set(currentModifierKey, true);
+                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().set(currentModifierKey, true);
                 options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
             } else {
-                ((IJEKKeyMapping) selectedKey).getModifierKeyMap().set(currentKey, true);
-                ((IJEKKeyMapping) selectedKey).getModifierKeyMap().clear(selectedKey);
+                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().set(currentKey, true);
+                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().clear(selectedKey);
             }
         }
         lastKeySelection = Util.getMillis();
-        IJEKKeyMapping.resetMapping();
+        IJEKKeyMappingExtensions.resetMapping();
         return true;
     }
 
@@ -79,7 +78,7 @@ public class JEKControlScreen extends ControlsScreen {
             return super.mouseClicked(mouseX, mouseY, button);
         }
         InputConstants.Key key = ((IJEKKeyMappingExtensions) selectedKey).jek$getKey();
-        ModifierKeyMap modifierKeyMap = ((IJEKKeyMapping) selectedKey).getModifierKeyMap();
+        ModifierKeyMap modifierKeyMap = ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap();
         modifierKeyMap.set(key, true);
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -106,7 +105,7 @@ public class JEKControlScreen extends ControlsScreen {
             for (KeyMapping keyMapping: this.options.keyMappings){
                 keyMapping.setKey(keyMapping.getDefaultKey());
             }
-            IJEKKeyMapping.resetMapping();
+            IJEKKeyMappingExtensions.resetMapping();
         }));
         this.addButton(new Button(this.width / 2 - 155 + 160, this.height - 29, 150, 20, CommonComponents.GUI_DONE, (button) -> {
             assert this.minecraft != null;

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.starmun.justenoughkeys.common.client.JEKKeyboardHandler;
 import xyz.starmun.justenoughkeys.common.client.JEKMouseHandler;
-import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMapping;
+import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin extends ReentrantBlockableEventLoop<Runnable> {
@@ -21,24 +21,21 @@ public class MinecraftMixin extends ReentrantBlockableEventLoop<Runnable> {
     @Shadow
     public MouseHandler mouseHandler;
 
-    @Shadow
-    public KeyboardHandler keyboardHandler;
-
     public MinecraftMixin(String string) {
         super(string);
     }
 
     @Inject(method = "<init>", at=@At("RETURN"))
     public void initKeyBoard(GameConfig gameConfig, CallbackInfo ci){
-        keyboardHandler = new JEKKeyboardHandler((Minecraft)(ReentrantBlockableEventLoop)this);
+        //keyboardHandler = new JEKKeyboardHandler((Minecraft)(ReentrantBlockableEventLoop)this);
         mouseHandler = new JEKMouseHandler((Minecraft)(ReentrantBlockableEventLoop)this);
-        keyboardHandler.setup(((Minecraft)(ReentrantBlockableEventLoop)this).getWindow().getWindow());
+        //keyboardHandler.setup(((Minecraft)(ReentrantBlockableEventLoop)this).getWindow().getWindow());
         mouseHandler.setup(((Minecraft)(ReentrantBlockableEventLoop)this).getWindow().getWindow());
     }
 
     @Inject(method = "setScreen", at=@At(target = "Lnet/minecraft/client/KeyMapping;releaseAll()V", value ="INVOKE", shift = At.Shift.AFTER, ordinal = 0))
     public void releaseAll(Screen screen, CallbackInfo ci){
-        IJEKKeyMapping.releaseAll();
+        IJEKKeyMappingExtensions.releaseAll();
     }
     @Shadow
     protected Runnable wrapRunnable(Runnable runnable) {

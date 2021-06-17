@@ -15,10 +15,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.commons.lang3.ArrayUtils;
-import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMapping;
+import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class JEKControlList extends ControlList {
@@ -92,7 +91,7 @@ public class JEKControlList extends ControlList {
             this.name = I18n.get(keyMapping.getName());
             this.changeButton = new Button(0, 0, 75 + 20, 20, new TextComponent(name), (button) -> {
                 JEKControlList.this.controlsScreen.selectedKey = keyMapping;
-                ((IJEKKeyMapping)keyMapping).getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().clear();
                 keyMapping.setKey(InputConstants.UNKNOWN);
             }) {
                 @Override
@@ -102,8 +101,8 @@ public class JEKControlList extends ControlList {
             };
             this.resetButton = new Button(0, 0, 50, 20, new TranslatableComponent("controls.reset"), (button) -> {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
-                IJEKKeyMapping.resetMapping();
-                ((IJEKKeyMapping)keyMapping).getModifierKeyMap().clear();
+                IJEKKeyMappingExtensions.resetMapping();
+                ((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().clear();
 
             }) {
                 @Override
