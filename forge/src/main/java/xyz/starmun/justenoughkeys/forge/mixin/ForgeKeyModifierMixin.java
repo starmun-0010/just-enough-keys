@@ -16,10 +16,10 @@ import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
         "net/minecraftforge/client/settings/KeyModifier$3",
         "net/minecraftforge/client/settings/KeyModifier$4"} )
 public class ForgeKeyModifierMixin {
-
-    @Inject(method = "isActive", at=@At("HEAD"),cancellable = true, remap = false)
-    public void isActive(@Nullable IKeyConflictContext conflictContext, CallbackInfoReturnable<Boolean> cir){
-        cir.setReturnValue(true);
-    }
+//
+//    @Inject(method = "isActive", at=@At("HEAD"),cancellable = true, remap = false)
+//    public void isActive(@Nullable IKeyConflictContext conflictContext, CallbackInfoReturnable<Boolean> cir){
+//        cir.setReturnValue(true);
+//    }
 
 }
