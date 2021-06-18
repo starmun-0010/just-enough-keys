@@ -80,7 +80,9 @@ public class JEKControlScreen extends ControlsScreen {
         InputConstants.Key key = ((IJEKKeyMappingExtensions) selectedKey).jek$getKey();
         ModifierKeyMap modifierKeyMap = ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap();
         modifierKeyMap.set(key, true);
-        return super.mouseClicked(mouseX, mouseY, button);
+        boolean result = super.mouseClicked(mouseX, mouseY, button);
+        IJEKKeyMappingExtensions.resetMapping();
+        return result;
     }
 
     @Override
