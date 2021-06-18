@@ -6,7 +6,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
-import xyz.starmun.justenoughkeys.common.mixin.KeyMappingMixin;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;

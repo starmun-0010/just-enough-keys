@@ -1,7 +1,6 @@
 package xyz.starmun.justenoughkeys.forge;
 
 import me.shedaniel.architectury.platform.forge.EventBuses;
-import net.minecraftforge.client.settings.KeyModifier;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

@@ -1,6 +1,5 @@
 package xyz.starmun.justenoughkeys.common.mixin;
 
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
@@ -16,9 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 @Mixin(KeyMapping.class)

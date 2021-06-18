@@ -14,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
-import java.util.Map;
-
 @Mixin(KeyMapping.class)
 public class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybinding {
     @Shadow

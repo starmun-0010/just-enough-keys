@@ -4,11 +4,9 @@ import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
-import xyz.starmun.justenoughkeys.common.contracts.IJEKOptionsSubScreenExtensions;
 
 @Mixin(OptionsSubScreen.class)
-public class OptionsSubScreenMixin extends Screen implements IJEKOptionsSubScreenExtensions {
-
+public class OptionsSubScreenMixin extends Screen   {
 
     protected OptionsSubScreenMixin(Component component) {
         super(component);
