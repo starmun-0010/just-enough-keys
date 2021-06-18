@@ -41,7 +41,7 @@ public class JEKControlList extends ControlList {
 
     private void initKeyMappings() {
         Arrays.stream(ArrayUtils.clone(minecraft.options.keyMappings))
-            .collect(Collectors.groupingBy(keyMapping -> keyMapping.getCategory(), LinkedHashMap::new, Collectors.toList()))
+            .collect(Collectors.groupingBy(KeyMapping::getCategory, LinkedHashMap::new, Collectors.toList()))
             .forEach((category, mappings) -> {
             this.children().add(new JKECategoryEntry(category));
             mappings.forEach(mapping -> {
@@ -115,7 +115,7 @@ public class JEKControlList extends ControlList {
         @Override
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 
-            int length = Math.max(0, x - JEKControlList.this.maxListLabelWidth);
+            int length = Math.max(0, x + 20 - JEKControlList.this.maxListLabelWidth);
             JEKControlList.this.minecraft.font.getClass();
             JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) length, (float) (y + rowWidth / 2 - 9 / 2), 16777215);
             this.resetButton.x = x + 190 + 20;

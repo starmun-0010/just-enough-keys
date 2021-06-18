@@ -16,11 +16,15 @@ import java.util.stream.Stream;
 public interface IJEKKeyMappingExtensions {
 
     InputConstants.Key jek$getKey();
+
     void jek$setClickCount(int i);
+
     int jek$getClickCount();
+
     Map<String, KeyMapping> ALL = Maps.newHashMap();
     Map<InputConstants.Key, ConcurrentLinkedQueue<KeyMapping>> MAP = Maps.newHashMap();
     ModifierKeyMap CURRENT_PRESSED_MODIFIERS = new ModifierKeyMap();
+
     ModifierKeyMap getModifierKeyMap();
 
     static void initMAP(KeyMapping keyMapping) {
@@ -39,8 +43,11 @@ public interface IJEKKeyMappingExtensions {
 
     static void set(InputConstants.Key key, boolean pressed) {
         CURRENT_PRESSED_MODIFIERS.set(ModifierKey.modifierKeyFromValue(key.getValue()), pressed);
-        if(pressed){
-            ALL.values().forEach(keyMapping -> keyMapping.setDown(false));
+        if (!pressed) {
+            Queue<KeyMapping> keyMappings = MAP.get(key);
+            if (keyMappings != null) {
+                keyMappings.forEach(keyMapping -> keyMapping.setDown(false));
+            }
         }
         getMatchingKeyMappings(key).forEach(keyMapping -> keyMapping.setDown(pressed));
     }
@@ -60,15 +67,15 @@ public interface IJEKKeyMappingExtensions {
     static void resetMapping() {
         KeyMapping.resetMapping();
         MAP.clear();
-        ALL.values().forEach(keyMapping -> initMAP(keyMapping));
+        ALL.values().forEach(IJEKKeyMappingExtensions::initMAP);
     }
 
     static Stream<KeyMapping> getMatchingKeyMappings(InputConstants.Key key) {
         Queue<KeyMapping> candidateKeys = MAP.get(key);
         if (candidateKeys == null) return Stream.empty();
-        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping -> ((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping -> ((IJEKKeyMappingExtensions) keyMapping).getModifierKeyMap().isPressed()).collect(Collectors.toSet());
         if (keyMappings.isEmpty()) {
-            return MAP.get(key).stream().filter(keyMapping -> !((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().any());
+            return MAP.get(key).stream().filter(keyMapping -> !((IJEKKeyMappingExtensions) keyMapping).getModifierKeyMap().any());
         } else {
             return keyMappings.stream();
         }

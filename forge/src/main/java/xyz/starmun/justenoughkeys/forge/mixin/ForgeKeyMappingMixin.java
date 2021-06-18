@@ -21,9 +21,6 @@ public class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybi
     @Shadow
     @Final
     private String name;
-    @Shadow
-    @Final
-    private static Map<String, KeyMapping> ALL;
 
     @Inject(method = "<init>(Ljava/lang/String;Lnet/minecraftforge/client/settings/IKeyConflictContext;Lnet/minecraftforge/client/settings/KeyModifier;Lcom/mojang/blaze3d/platform/InputConstants$Key;Ljava/lang/String;)V", at = @At("INVOKE"))
     public void fillMap(String description, IKeyConflictContext keyConflictContext, KeyModifier keyModifier, InputConstants.Key keyCode, String category, CallbackInfo ci) {

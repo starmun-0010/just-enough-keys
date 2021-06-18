@@ -31,10 +31,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     @Shadow
     private int clickCount;
 
-    @Shadow
-    @Final
-    private static Map<String, KeyMapping> ALL = Maps.newHashMap();
-
     @Override
     public InputConstants.Key jek$getKey() {
         return key;
