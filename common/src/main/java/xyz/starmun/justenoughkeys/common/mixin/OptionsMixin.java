@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
+import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -55,11 +56,14 @@ public class OptionsMixin {
                         Iterator<String> lineIterator = OPTION_SPLITTER.split(line).iterator();
                         KeyMapping keyMapping = IJEKKeyMappingExtensions.ALL.get(lineIterator.next().replaceFirst("modifiers.", "").trim());
                         Iterator<String> valueIterator = VALUE_SPLITTER.split(lineIterator.next()).iterator();
-                        valueIterator.forEachRemaining(keyValue ->
-                                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap()
-                                        .set(InputConstants.getKey(keyValue.trim())));
+                        valueIterator.forEachRemaining(keyValue -> {
+                            if (keyValue.trim().length() >0 && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap()
+                                    .set(InputConstants.getKey(keyValue.trim())) == ModifierKey.UNKNOWN) {
+                                JustEnoughKeys.LOGGER.error("Skipping bad option: {}", line);
+                            }
+                        });
                     } catch (Exception ex) {
-                        JustEnoughKeys.LOGGER.warn("Skipping bad option: {}", line);
+                        JustEnoughKeys.LOGGER.error("Skipping bad option: {}", line);
                     }
                 });
             } catch (Exception ex) {
@@ -85,7 +89,7 @@ public class OptionsMixin {
                     StringBuilder builder = new StringBuilder();
                     ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().values().forEach(modifierKey -> builder.append(modifierKey.getName() + ","));
 
-                    printWriter.println("modifiers." + keyMapping.getName() + ":" +(builder.length() >0? builder.substring(0, builder.length() - 1):""));
+                    printWriter.println("modifiers." + keyMapping.getName() + ":" + (builder.length() > 0 ? builder.substring(0, builder.length() - 1) : ""));
                 }
             } catch (Exception ex) {
                 JustEnoughKeys.LOGGER.error("Failed to save Just Enough Keys options file", ex);

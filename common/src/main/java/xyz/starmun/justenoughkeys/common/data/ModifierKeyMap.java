@@ -11,26 +11,27 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
 
     private final BitSet bitSet = new BitSet();
 
-    public void set(ModifierKey key, boolean isPressed){
+    public ModifierKey set(ModifierKey key, boolean isPressed){
         if(key== ModifierKey.UNKNOWN)
-            return;
+            return ModifierKey.UNKNOWN;
         bitSet.set(key.id,isPressed);
         if(isPressed){
-            super.put(key.id, key);
+            return super.put(key.id, key);
 
         }
         else {
-            super.remove(key.id);
+            return super.remove(key.id);
         }
     }
-    public void set(InputConstants.Key key, boolean isPressed){
+    public ModifierKey set(InputConstants.Key key, boolean isPressed){
         if(ModifierKey.isModifierKey(key)){
             ModifierKey modifierKey = ModifierKey.modifierKeyFromValue(key.getValue());
-            this.set(modifierKey, isPressed);
+            return this.set(modifierKey, isPressed);
         }
+        return ModifierKey.UNKNOWN;
     }
-    public void set(InputConstants.Key key){
-      set(key,true);
+    public ModifierKey set(InputConstants.Key key){
+      return set(key,true);
     }
     public boolean any(){
         return !this.bitSet.isEmpty();

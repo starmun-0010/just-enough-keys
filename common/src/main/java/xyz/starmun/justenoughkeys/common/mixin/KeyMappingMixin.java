@@ -1,5 +1,6 @@
 package xyz.starmun.justenoughkeys.common.mixin;
 
+import com.google.common.base.Splitter;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
@@ -15,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
+
+import java.util.Iterator;
 
 
 @Mixin(KeyMapping.class)
@@ -62,9 +65,16 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "getTranslatedKeyMessage", at=@At("INVOKE"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
-        StringBuilder builder = new StringBuilder();
-        this.jek$getModifierKeyMap().forEach((id, modifierKey) -> builder.append(modifierKey.name));
-        cir.setReturnValue(new TextComponent(builder.toString()).append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName()));
+        TextComponent displayText = new TextComponent("");
+        final Splitter NAME_SPLITTER = Splitter.on(' ');
+
+        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
+            Iterator<String> iterator = NAME_SPLITTER.split(InputConstants.getKey(modifierKey.getName()).getDisplayName().getString()).iterator();
+            iterator.forEachRemaining(string-> displayText.append(string.substring(0,1)));
+            displayText.append(new TextComponent("+"));
+        });
+        displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        cir.setReturnValue(displayText);
     }
     @Inject(method = "matches", at=@At("INVOKE"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
