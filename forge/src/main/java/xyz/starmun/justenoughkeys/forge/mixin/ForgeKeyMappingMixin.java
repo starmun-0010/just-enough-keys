@@ -29,7 +29,7 @@ public class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybi
     @Override
     public boolean isActiveAndMatches(InputConstants.Key keyCode) {
 
-        return keyCode != InputConstants.UNKNOWN && keyCode.equals(getKey()) && getKeyConflictContext().isActive() && ((IJEKKeyMappingExtensions) this).getModifierKeyMap().isPressed();
+        return keyCode != InputConstants.UNKNOWN && keyCode.equals(getKey()) && getKeyConflictContext().isActive() && ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed();
     }
 
     @Shadow

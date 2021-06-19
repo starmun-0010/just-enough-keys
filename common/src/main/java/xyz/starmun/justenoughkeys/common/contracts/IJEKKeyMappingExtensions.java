@@ -24,7 +24,7 @@ public interface IJEKKeyMappingExtensions {
     Map<InputConstants.Key, ConcurrentLinkedQueue<KeyMapping>> MAP = Maps.newHashMap();
     ModifierKeyMap CURRENT_PRESSED_MODIFIERS = new ModifierKeyMap();
 
-    ModifierKeyMap getModifierKeyMap();
+    ModifierKeyMap jek$getModifierKeyMap();
 
     static void initMAP(KeyMapping keyMapping) {
         InputConstants.Key key = ((IJEKKeyMappingExtensions) (keyMapping)).jek$getKey();
@@ -72,9 +72,9 @@ public interface IJEKKeyMappingExtensions {
     static Stream<KeyMapping> getMatchingKeyMappings(InputConstants.Key key) {
         Queue<KeyMapping> candidateKeys = MAP.get(key);
         if (candidateKeys == null) return Stream.empty();
-        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping -> ((IJEKKeyMappingExtensions) keyMapping).getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping -> ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
         if (keyMappings.isEmpty()) {
-            return MAP.get(key).stream().filter(keyMapping -> !((IJEKKeyMappingExtensions) keyMapping).getModifierKeyMap().any());
+            return MAP.get(key).stream().filter(keyMapping -> !((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().any());
         } else {
             return keyMappings.stream();
         }

@@ -59,7 +59,7 @@ public class ModifierKey {
     }
 
     public String getName(){
-        return name;
+        return InputConstants.getKey(this.value,0).getName();
     }
 
 }

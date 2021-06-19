@@ -63,7 +63,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     @Inject(method = "getTranslatedKeyMessage", at=@At("INVOKE"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
         StringBuilder builder = new StringBuilder();
-        this.getModifierKeyMap().forEach((id, modifierKey) -> builder.append(modifierKey.name));
+        this.jek$getModifierKeyMap().forEach((id, modifierKey) -> builder.append(modifierKey.name));
         cir.setReturnValue(new TextComponent(builder.toString()).append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName()));
     }
     @Inject(method = "matches", at=@At("INVOKE"),cancellable = true)
@@ -86,7 +86,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
-       if(!((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().equals(modifierKeyMap)){
+       if(!((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(modifierKeyMap)){
           cir.setReturnValue(false);
        }
     }
@@ -104,7 +104,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        ci.cancel();
     }
     @Override
-    public ModifierKeyMap getModifierKeyMap() {
+    public ModifierKeyMap jek$getModifierKeyMap() {
         return modifierKeyMap;
     }
 

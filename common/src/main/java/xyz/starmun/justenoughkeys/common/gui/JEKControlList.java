@@ -91,7 +91,7 @@ public class JEKControlList extends ControlList {
             this.name = I18n.get(keyMapping.getName());
             this.changeButton = new Button(0, 0, 75 + 20, 20, new TextComponent(name), (button) -> {
                 JEKControlList.this.controlsScreen.selectedKey = keyMapping;
-                ((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().clear();
                 keyMapping.setKey(InputConstants.UNKNOWN);
             }) {
                 @Override
@@ -102,7 +102,7 @@ public class JEKControlList extends ControlList {
             this.resetButton = new Button(0, 0, 50, 20, new TranslatableComponent("controls.reset"), (button) -> {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
-                ((IJEKKeyMappingExtensions)keyMapping).getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().clear();
 
             }) {
                 @Override

@@ -29,6 +29,9 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
             this.set(modifierKey, isPressed);
         }
     }
+    public void set(InputConstants.Key key){
+      set(key,true);
+    }
     public boolean any(){
         return !this.bitSet.isEmpty();
     }
