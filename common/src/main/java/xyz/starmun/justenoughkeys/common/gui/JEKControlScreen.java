@@ -106,6 +106,7 @@ public class JEKControlScreen extends ControlsScreen {
         this.resetButton = this.addButton(new Button(this.width / 2 - 155, this.height - 29, 150, 20, new TranslatableComponent("controls.resetAll"), (button) -> {
             for (KeyMapping keyMapping: this.options.keyMappings){
                 keyMapping.setKey(keyMapping.getDefaultKey());
+                ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().clear();
             }
             IJEKKeyMappingExtensions.resetMapping();
         }));
