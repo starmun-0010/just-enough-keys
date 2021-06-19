@@ -43,7 +43,7 @@ public class JEKControlScreen extends ControlsScreen {
             return super.keyPressed(keyValue, scanCode, modifiers);
         }
         if (keyValue == GLFW.GLFW_KEY_ESCAPE) {
-            ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().clear();
+            ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().clear();
         }
         else if(selectedKey.isUnbound()){
             options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
@@ -53,11 +53,11 @@ public class JEKControlScreen extends ControlsScreen {
             ModifierKey currentModifierKey = ModifierKey.modifierKeyFromValue(currentModifierKeyValue);
             ModifierKey currentKey = ModifierKey.modifierKeyFromValue(keyValue);
             if (currentModifierKey != ModifierKey.UNKNOWN && currentKey == ModifierKey.UNKNOWN) {
-                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().set(currentModifierKey, true);
+                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().set(currentModifierKey, true);
                 options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
             } else {
-                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().set(currentKey, true);
-                ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap().clear(selectedKey);
+                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().set(currentKey, true);
+                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().clear(selectedKey);
             }
         }
         lastKeySelection = Util.getMillis();
@@ -78,7 +78,7 @@ public class JEKControlScreen extends ControlsScreen {
             return super.mouseClicked(mouseX, mouseY, button);
         }
         InputConstants.Key key = ((IJEKKeyMappingExtensions) selectedKey).jek$getKey();
-        ModifierKeyMap modifierKeyMap = ((IJEKKeyMappingExtensions) selectedKey).getModifierKeyMap();
+        ModifierKeyMap modifierKeyMap = ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap();
         modifierKeyMap.set(key, true);
         boolean result = super.mouseClicked(mouseX, mouseY, button);
         IJEKKeyMappingExtensions.resetMapping();
