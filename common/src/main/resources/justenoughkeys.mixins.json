@@ -6,7 +6,8 @@
     "KeyMappingMixin",
     "OptionsSubScreenMixin",
     "ControlsScreenMixin",
-    "MinecraftMixin"
+    "MinecraftMixin",
+    "OptionsMixin"
   ],
   "client": [
   ],
