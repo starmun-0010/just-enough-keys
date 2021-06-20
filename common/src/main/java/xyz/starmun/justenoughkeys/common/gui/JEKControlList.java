@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class JEKControlList extends ControlList {
     private final ControlsScreen controlsScreen;
     private int maxListLabelWidth;
+    private List<Entry> keyEntries = new ArrayList<>();
+
 
     public JEKControlList(ControlsScreen controlsScreen, Minecraft minecraft) {
 
@@ -30,9 +32,8 @@ public class JEKControlList extends ControlList {
         this.width = controlsScreen.width + 45;
         this.height = controlsScreen.height;
         this.y0 = 43;
-        this.y1 = controlsScreen.height - 43;
+        this.y1 = controlsScreen.height - 60;
         this.x1 = controlsScreen.width + 45;
-        this.x0 = 0;
         this.controlsScreen = controlsScreen;
         this.children().clear();
         this.initKeyMappings();
@@ -41,17 +42,54 @@ public class JEKControlList extends ControlList {
 
     private void initKeyMappings() {
         Arrays.stream(ArrayUtils.clone(minecraft.options.keyMappings))
-            .collect(Collectors.groupingBy(KeyMapping::getCategory, LinkedHashMap::new, Collectors.toList()))
-            .forEach((category, mappings) -> {
-            this.children().add(new JKECategoryEntry(category));
-            mappings.forEach(mapping -> {
-                this.children().add(new JEKKeyEntry(mapping));
-                int i = minecraft.font.width(I18n.get(category));
-                if (i > this.maxListLabelWidth) {
-                    this.maxListLabelWidth = i;
-                }
-            });
-        });
+                .collect(Collectors.groupingBy(KeyMapping::getCategory, LinkedHashMap::new, Collectors.toList()))
+                .forEach((category, mappings) -> {
+                    JKECategoryEntry categoryEntry = new JKECategoryEntry(category);
+                    this.children().add(categoryEntry);
+                    this.keyEntries.add(categoryEntry);
+                    mappings.forEach(mapping -> {
+                        JEKKeyEntry keyEntry = new JEKKeyEntry(mapping);
+                        this.children().add(keyEntry);
+                        this.keyEntries.add(keyEntry);
+                        int i = minecraft.font.width(I18n.get(category));
+                        if (i > this.maxListLabelWidth) {
+                            this.maxListLabelWidth = i;
+                        }
+                    });
+                });
+    }
+
+    public void search(String query) {
+        this.children().clear();
+        String allParametersStrippedQuery = query.replaceAll("\\^c|\\^u|@k|@c|@n","").trim();
+        String filterParametersStrippedQuery = query.replaceAll("\\^c|\\^u","").trim();
+        this.setScrollAmount(0);
+        this.children().addAll(this.keyEntries.stream().filter(entry ->
+                //No query text or whitespace
+                query.trim().isEmpty() ||
+                        (
+                        //Filter by
+                        (
+                                //no filter
+                                (!query.contains("^u") && ! query.contains("^c"))
+                                //Filter by unbound
+                                || ((query.startsWith("^u") || query.contains(" ^u ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).key.isUnbound())
+                                //Filter by conflicted
+                                || ((query.startsWith("^c") || query.contains(" ^c ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).isConflicted)
+
+                        )
+                        && //Search by
+                        (
+                                //no search query, just filters
+                                filterParametersStrippedQuery.isEmpty()
+                                //search by name
+                                || ((!query.contains("@c") && !query.contains("@k")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).name.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))
+                                //search by category
+                                ||((query.startsWith("@c ") || query.contains(" @c ")) && ((entry instanceof JKECategoryEntry && ((JKECategoryEntry) entry).labelText.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery)) || (entry instanceof JEKKeyEntry && I18n.get(((JEKKeyEntry) entry).key.getCategory()).toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))))
+                                //search by key
+                                ||((query.startsWith("@k ") || query.contains(" @k ")) && (entry instanceof JEKKeyEntry && !((JEKKeyEntry) entry).key.isUnbound() && ((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getKey().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery)))
+
+                        ))).collect(Collectors.toList()));
     }
 
     public class JKECategoryEntry extends ControlList.Entry {
@@ -85,13 +123,14 @@ public class JEKControlList extends ControlList {
         private final Button changeButton;
         private final Button resetButton;
         private final String name;
+        private boolean isConflicted = false;
 
         private JEKKeyEntry(final KeyMapping keyMapping) {
             this.key = keyMapping;
             this.name = I18n.get(keyMapping.getName());
-            this.changeButton = new Button(0, 0, 75 + 20, 20, new TextComponent(name), (button) -> {
+            this.changeButton = new Button(0, 0, 100, 20, new TextComponent(name), (button) -> {
                 JEKControlList.this.controlsScreen.selectedKey = keyMapping;
-                ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
                 keyMapping.setKey(InputConstants.UNKNOWN);
             }) {
                 @Override
@@ -102,7 +141,7 @@ public class JEKControlList extends ControlList {
             this.resetButton = new Button(0, 0, 50, 20, new TranslatableComponent("controls.reset"), (button) -> {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
-                ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
 
             }) {
                 @Override
@@ -115,7 +154,7 @@ public class JEKControlList extends ControlList {
         @Override
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 
-            int length = Math.max(0, x + 20 - JEKControlList.this.maxListLabelWidth);
+            int length = Math.max(0, x + 30 - JEKControlList.this.maxListLabelWidth);
             JEKControlList.this.minecraft.font.getClass();
             JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) length, (float) (y + rowWidth / 2 - 9 / 2), 16777215);
             this.resetButton.x = x + 190 + 20;
@@ -131,17 +170,17 @@ public class JEKControlList extends ControlList {
 
         private void setChangeButtonMessageStyle() {
             //If it is the selected key
-
+            this.isConflicted = false;
             if (JEKControlList.this.controlsScreen.selectedKey == this.key) {
                 this.changeButton.setMessage((new TextComponent("> "))
                         .append(this.changeButton.getMessage().copy().withStyle(ChatFormatting.YELLOW))
                         .append(" <").withStyle(ChatFormatting.YELLOW));
-            }
-            else if(this.key.isUnbound()){
+            } else if (this.key.isUnbound()) {
                 this.changeButton.setMessage(this.changeButton.getMessage().copy().withStyle(ChatFormatting.GRAY));
-            //if it is a conflicted key
+                //if it is a conflicted key
             } else if (Arrays.stream(JEKControlList.this.minecraft.options.keyMappings)
                     .anyMatch(keyMapping -> keyMapping != this.key && this.key.same(keyMapping))) {
+                this.isConflicted = true;
                 this.changeButton.setMessage(this.changeButton.getMessage().copy().withStyle(ChatFormatting.RED));
             }
         }
@@ -153,9 +192,9 @@ public class JEKControlList extends ControlList {
 
         @Override
         public boolean mouseClicked(double d, double e, int i) {
-            if(super.mouseClicked(d,e,i)) return true;
-            if(changeButton.mouseClicked(d,e,i)) return true;
-            else return resetButton.mouseClicked(d,e,i);
+            if (super.mouseClicked(d, e, i)) return true;
+            if (changeButton.mouseClicked(d, e, i)) return true;
+            else return resetButton.mouseClicked(d, e, i);
         }
     }
 }
