@@ -142,6 +142,7 @@ public class JEKControlList extends ControlList {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).getPlatformDefaultModifierKey(),true);
 
             }) {
                 @Override

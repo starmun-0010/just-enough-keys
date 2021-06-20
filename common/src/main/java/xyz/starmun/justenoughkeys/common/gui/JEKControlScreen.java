@@ -132,6 +132,7 @@ public class JEKControlScreen extends ControlsScreen {
             for (KeyMapping keyMapping : this.options.keyMappings) {
                 keyMapping.setKey(keyMapping.getDefaultKey());
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).getPlatformDefaultModifierKey(),true);
             }
             IJEKKeyMappingExtensions.resetMapping();
         }));
