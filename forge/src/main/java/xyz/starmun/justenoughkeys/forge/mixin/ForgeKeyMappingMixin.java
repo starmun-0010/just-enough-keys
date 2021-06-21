@@ -21,11 +21,12 @@ import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 @Mixin(KeyMapping.class)
 public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybinding {
 
+    @Shadow private InputConstants.Key key;
     @Shadow
     @Final
     private String name;
 
-    @Inject(method = "<init>(Ljava/lang/String;Lnet/minecraftforge/client/settings/IKeyConflictContext;Lnet/minecraftforge/client/settings/KeyModifier;Lcom/mojang/blaze3d/platform/InputConstants$Key;Ljava/lang/String;)V", at = @At("RETURN"))
+    @Inject(method = "<init>(Ljava/lang/String;Lnet/minecraftforge/client/settings/IKeyConflictContext;Lnet/minecraftforge/client/settings/KeyModifier;Lcom/mojang/blaze3d/platform/InputConstants$Key;Ljava/lang/String;)V", at = @At("TAIL"))
     public void fillMap(String description, IKeyConflictContext keyConflictContext, KeyModifier keyModifier, InputConstants.Key keyCode, String category, CallbackInfo ci) {
         ((IJEKKeyMappingExtensions)this).setPlatformDefaultModifierKey(getModifierKeyFromKeyModifier(keyModifier));
         ((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap().set(getModifierKeyFromKeyModifier(keyModifier), true);
@@ -38,11 +39,15 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return keyCode != InputConstants.UNKNOWN && keyCode.equals(getKey()) && getKeyConflictContext().isActive() && ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed();
     }
 
-    @Inject(method = "same", at=@At("RETURN"), cancellable = true)
+    @Inject(method = "same", at=@At("HEAD"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
-        if(!((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap()) || !this.getKeyConflictContext().equals(keyMapping.getKeyConflictContext())){
-            cir.setReturnValue(false);
+        if(this.getKeyConflictContext().conflicts(keyMapping.getKeyConflictContext())
+                && ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap())
+                && this.key.equals(keyMapping.getKey())){
+            cir.setReturnValue(true);
+            return;
         }
+        cir.setReturnValue(false);
     }
     @Shadow
     public int compareTo(@NotNull KeyMapping o) {
@@ -60,6 +65,7 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
             cir.setReturnValue(false);
         }
     }
+
     @Unique
     private ModifierKey getModifierKeyFromKeyModifier(KeyModifier keyModifier){
         if(keyModifier == KeyModifier.ALT){

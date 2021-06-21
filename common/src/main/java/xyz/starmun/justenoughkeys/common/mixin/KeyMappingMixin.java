@@ -104,7 +104,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
                 cir.setReturnValue(false);
         }
     }
-
+    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "same", at=@At("TAIL"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
        if(!((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(modifierKeyMap)){
