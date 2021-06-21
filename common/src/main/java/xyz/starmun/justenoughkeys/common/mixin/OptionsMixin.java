@@ -40,13 +40,13 @@ public class OptionsMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void init(Minecraft minecraft, File file, CallbackInfo ci) {
-        jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
+        this.jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
     }
 
-    @Inject(method = "load", at = @At("HEAD"))
+    @Inject(method = "load", at = @At("TAIL"))
     public void load(CallbackInfo ci) {
         try {
-            if (!this.jekOptionsFile.exists()) {
+            if (this.jekOptionsFile == null || !this.jekOptionsFile.exists()) {
                 return;
             }
             BufferedReader bufferedReader = Files.newReader(this.jekOptionsFile, Charsets.UTF_8);
@@ -59,11 +59,11 @@ public class OptionsMixin {
                         valueIterator.forEachRemaining(keyValue -> {
                             if (keyValue.trim().length() >0 && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap()
                                     .set(InputConstants.getKey(keyValue.trim())) == ModifierKey.UNKNOWN) {
-                                JustEnoughKeys.LOGGER.error("Skipping bad option: {}", line);
+                                JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
                             }
                         });
                     } catch (Exception ex) {
-                        JustEnoughKeys.LOGGER.error("Skipping bad option: {}", line);
+                        JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
                     }
                 });
             } catch (Exception ex) {
