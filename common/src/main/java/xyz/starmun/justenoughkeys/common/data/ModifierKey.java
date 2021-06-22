@@ -61,5 +61,7 @@ public class ModifierKey {
     public String getName(){
         return InputConstants.getKey(this.value,0).getName();
     }
-
+    public String getDisplayName(){
+        return InputConstants.getKey(this.value,0).getDisplayName().getString();
+    }
 }
