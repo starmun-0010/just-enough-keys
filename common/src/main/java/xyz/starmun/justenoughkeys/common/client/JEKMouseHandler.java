@@ -16,11 +16,6 @@ public class JEKMouseHandler extends MouseHandler {
     @Override
     public void grabMouse() {
         super.grabMouse();
-        if (this.minecraft.isWindowActive()) {
-            if (!Minecraft.ON_OSX) {
-                IJEKKeyMappingExtensions.setAll();
-            }
-        }
         if (Platform.isDevelopmentEnvironment()) {
             GLFW.glfwSetInputMode(this.minecraft.getWindow().getWindow(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
         }

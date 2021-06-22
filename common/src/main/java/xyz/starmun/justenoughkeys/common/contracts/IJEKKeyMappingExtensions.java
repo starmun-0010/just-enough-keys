@@ -57,6 +57,7 @@ public interface IJEKKeyMappingExtensions {
     }
 
     static void setAll() {
+        CURRENT_PRESSED_MODIFIERS.setAll();
         MAP.values().stream().flatMap(Collection::stream).collect(Collectors.toSet())
                 .forEach(keyMapping -> keyMapping.setDown(!keyMapping.isUnbound()
                         && ((IJEKKeyMappingExtensions) keyMapping).jek$getKey().getType() == InputConstants.Type.KEYSYM
@@ -65,6 +66,7 @@ public interface IJEKKeyMappingExtensions {
     }
 
     static void releaseAll() {
+        CURRENT_PRESSED_MODIFIERS.clear();
         MAP.values().stream().flatMap(Collection::stream).collect(Collectors.toList()).forEach((jekKeyMappings) -> jekKeyMappings.setDown(false));
     }
 

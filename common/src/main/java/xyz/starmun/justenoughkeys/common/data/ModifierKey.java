@@ -12,7 +12,7 @@ public class ModifierKey {
     public final String name;
     final int value;
 
-    static final HashMap<Integer, ModifierKey> MODIFIER_KEYS = new HashMap<>();
+    public static final HashMap<Integer, ModifierKey> MODIFIER_KEYS = new HashMap<>();
 
     public static final ModifierKey UNKNOWN = new ModifierKey(1, "UNKNOWN", GLFW.GLFW_KEY_UNKNOWN);
     public static final ModifierKey KEYBOARD_LEFT_ALT = new ModifierKey(105, "LEFT ALT", GLFW.GLFW_KEY_LEFT_ALT);

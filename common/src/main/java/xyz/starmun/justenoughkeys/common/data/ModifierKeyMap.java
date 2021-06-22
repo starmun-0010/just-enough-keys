@@ -2,6 +2,9 @@ package xyz.starmun.justenoughkeys.common.data;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
 import java.util.BitSet;
@@ -45,5 +48,11 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
     }
     public boolean isPressed(){
         return IJEKKeyMappingExtensions.CURRENT_PRESSED_MODIFIERS.bitSet.equals(this.bitSet);
+    }
+    public void setAll(){
+        ModifierKey.MODIFIER_KEYS.values()
+                .forEach(modifierKey ->  set(ModifierKey.modifierKeyFromValue(modifierKey.value)
+                        ,InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), modifierKey.value)));
+
     }
 }

@@ -120,6 +120,11 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        }
     }
 
+    @Inject(method = "setAll", at = @At("HEAD"), cancellable = true)
+    private static void setAll(CallbackInfo ci){
+        IJEKKeyMappingExtensions.setAll();
+        ci.cancel();
+    }
     @Inject(method = "releaseAll", at=@At("HEAD"), cancellable = true)
     private static void releaseAll(CallbackInfo ci){
        IJEKKeyMappingExtensions.releaseAll();
