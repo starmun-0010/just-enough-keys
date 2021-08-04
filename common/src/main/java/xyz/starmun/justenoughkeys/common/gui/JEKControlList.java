@@ -188,7 +188,7 @@ public class JEKControlList extends ControlList {
 
         @Override
         public List<? extends GuiEventListener> children() {
-            return ImmutableList.of();
+            return ImmutableList.of(this.changeButton, this.resetButton);
         }
 
         @Override
