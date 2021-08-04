@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "xyz.starmun.justenoughkeys.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "KeyMappingMixin",
+    "OptionsSubScreenMixin",
+    "ControlsScreenMixin",
+    "OptionsMixin",
+    "MinecraftMixin",
+    "ScreenMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

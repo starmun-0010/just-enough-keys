@@ -1,9 +1,0 @@
-{
-  "package": "xyz.starmun.justenoughkeys.forge.mixin",
-  "target": "@env(DEFAULT)",
-  "minVersion": "0.6",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "ForgeKeyMappingMixin"
-  ]
-}
