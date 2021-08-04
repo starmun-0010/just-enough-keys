@@ -15,10 +15,7 @@ import net.minecraft.client.gui.screens.MouseSettingsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.contracts.IJEKControlScreenExtensions;
 import xyz.starmun.justenoughkeys.contracts.IJEKKeyMappingExtensions;
@@ -26,15 +23,14 @@ import xyz.starmun.justenoughkeys.contracts.IJEKScreenExtensions;
 import xyz.starmun.justenoughkeys.data.ModifierKey;
 import xyz.starmun.justenoughkeys.data.ModifierKeyMap;
 
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 
 public class JEKControlScreen extends ControlsScreen {
 
     private Button resetButton;
     private EditBox search;
     private String searchQuery = "";
-    private BaseComponent toolTipComponent;
+    private List<Component> toolTipComponent;
 
     public JEKControlScreen(Screen screen, Options options) {
         super(screen, options);
@@ -43,6 +39,7 @@ public class JEKControlScreen extends ControlsScreen {
     protected void init() {
         ControlList controlList = new JEKControlList(this, Minecraft.getInstance());
         ((IJEKControlScreenExtensions) this).jek$setControlList(controlList);
+        this.toolTipComponent= new ArrayList<>();
         this.addWidget(controlList);
         initWidgets();
 
@@ -121,7 +118,7 @@ public class JEKControlScreen extends ControlsScreen {
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j) && !search.isFocused()) {
-            renderTooltip(poseStack, this.toolTipComponent, i, j);
+            renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
         }
         font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
     }
@@ -150,27 +147,19 @@ public class JEKControlScreen extends ControlsScreen {
             this.minecraft.setScreen(this.lastScreen);
         }));
 
-        this.toolTipComponent = new TextComponent("");
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.title").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_AQUA)));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.description"));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.title").withStyle(ChatFormatting.GRAY));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.description"));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.title").withStyle(ChatFormatting.DARK_GRAY));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.description"));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.title").withStyle(ChatFormatting.DARK_GRAY));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.description"));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TextComponent(System.lineSeparator()));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.prefix").withStyle(ChatFormatting.DARK_GRAY));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.query").withStyle(ChatFormatting.GOLD));
-        toolTipComponent.append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.suffix"));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.title").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_AQUA)));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.description"));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.title").withStyle(ChatFormatting.GRAY));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.description"));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.title").withStyle(ChatFormatting.DARK_GRAY));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.description"));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.title").withStyle(ChatFormatting.DARK_GRAY));
+        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.description"));
+        toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.prefix")
+            .withStyle(ChatFormatting.DARK_GRAY)
+            .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.query")
+            .withStyle(ChatFormatting.GOLD))
+            .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.suffix")));
 
     }
 
