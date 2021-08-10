@@ -12,22 +12,14 @@ architectury {
 }
 
 loom {
-    mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
-    launches {
-        client {
-            property "fabric.log.level", "debug"
-        }
-        server {
-            property "fabric.log.level", "debug"
-        }
-    }
+    useFabricMixin = true
 }
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API
-    //modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
-    modRuntime "curse.maven:jei-238222:3345971"
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
     implementation(project(path: ":common")) {
         transitive = false
     }
@@ -90,9 +82,6 @@ publishing {
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        maven {
-            name = 'myRepo'
-            url = layout.buildDirectory.dir("repo")
-        }
+        // Add repositories to publish to here.
     }
 }

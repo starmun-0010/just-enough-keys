@@ -8,6 +8,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.client.resources.language.I18n;
@@ -68,28 +71,28 @@ public class JEKControlList extends ControlList {
                 //No query text or whitespace
                 query.trim().isEmpty() ||
                         (
-                        //Filter by
-                        (
-                                //no filter
-                                (!query.contains("^u") && ! query.contains("^c"))
-                                //Filter by unbound
-                                || ((query.startsWith("^u") || query.contains(" ^u ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).key.isUnbound())
-                                //Filter by conflicted
-                                || ((query.startsWith("^c") || query.contains(" ^c ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).isConflicted)
+                                //Filter by
+                                (
+                                        //no filter
+                                        (!query.contains("^u") && ! query.contains("^c"))
+                                                //Filter by unbound
+                                                || ((query.startsWith("^u") || query.contains(" ^u ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).key.isUnbound())
+                                                //Filter by conflicted
+                                                || ((query.startsWith("^c") || query.contains(" ^c ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).isConflicted)
 
-                        )
-                        && //Search by
-                        (
-                                //no search query, just filters
-                                filterParametersStrippedQuery.isEmpty()
-                                //search by name
-                                || ((!query.contains("@c") && !query.contains("@k")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).name.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))
-                                //search by category
-                                ||((query.startsWith("@c ") || query.contains(" @c ")) && ((entry instanceof JKECategoryEntry && ((JKECategoryEntry) entry).labelText.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery)) || (entry instanceof JEKKeyEntry && I18n.get(((JEKKeyEntry) entry).key.getCategory()).toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))))
-                                //search by key
-                                ||((query.startsWith("@k ") || query.contains(" @k ")) && (entry instanceof JEKKeyEntry && !((JEKKeyEntry) entry).key.isUnbound() && (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getKey().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery) || (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getModifierKeyMap().search(allParametersStrippedQuery)))))
+                                )
+                                        && //Search by
+                                        (
+                                                //no search query, just filters
+                                                filterParametersStrippedQuery.isEmpty()
+                                                        //search by name
+                                                        || ((!query.contains("@c") && !query.contains("@k")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).name.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))
+                                                        //search by category
+                                                        ||((query.startsWith("@c ") || query.contains(" @c ")) && ((entry instanceof JKECategoryEntry && ((JKECategoryEntry) entry).labelText.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery)) || (entry instanceof JEKKeyEntry && I18n.get(((JEKKeyEntry) entry).key.getCategory()).toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))))
+                                                        //search by key
+                                                        ||((query.startsWith("@k ") || query.contains(" @k ")) && (entry instanceof JEKKeyEntry && !((JEKKeyEntry) entry).key.isUnbound() && (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getKey().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery) || (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getModifierKeyMap().search(allParametersStrippedQuery)))))
 
-                        ))).collect(Collectors.toList()));
+                                        ))).collect(Collectors.toList()));
     }
 
     public class JKECategoryEntry extends ControlList.Entry {
@@ -114,6 +117,19 @@ public class JEKControlList extends ControlList {
 
         public void render(PoseStack stack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
             JEKControlList.this.minecraft.font.draw(stack, this.labelText, (float) (JEKControlList.this.minecraft.screen.width / 2 - this.labelWidth / 2), (float) (y + rowWidth - 9 - 1), 16777215);
+        }
+
+        @Override
+        public List<? extends NarratableEntry> narratables() {
+            return ImmutableList.of(new NarratableEntry() {// 81
+                public NarrationPriority narrationPriority() {
+                    return NarrationPriority.HOVERED;// 84
+                }
+
+                public void updateNarration(NarrationElementOutput narrationElementOutput) {
+                    narrationElementOutput.add(NarratedElementType.TITLE, JKECategoryEntry.this.name);// 89
+                }// 90
+            });
         }
     }
 
@@ -196,6 +212,11 @@ public class JEKControlList extends ControlList {
             if (super.mouseClicked(d, e, i)) return true;
             if (changeButton.mouseClicked(d, e, i)) return true;
             else return resetButton.mouseClicked(d, e, i);
+        }
+
+        @Override
+        public List<? extends NarratableEntry> narratables() {
+            return ImmutableList.of(this.changeButton, this.resetButton);// 166
         }
     }
 }
