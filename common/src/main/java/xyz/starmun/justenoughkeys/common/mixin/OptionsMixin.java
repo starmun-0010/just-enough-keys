@@ -38,7 +38,7 @@ public class OptionsMixin {
     @Unique
     private static final Splitter VALUE_SPLITTER = Splitter.on(',');
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;load()V", shift = At.Shift.BEFORE))
     public void init(Minecraft minecraft, File file, CallbackInfo ci) {
         this.jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
     }
