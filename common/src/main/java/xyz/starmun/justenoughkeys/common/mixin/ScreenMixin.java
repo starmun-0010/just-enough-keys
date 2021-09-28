@@ -9,7 +9,7 @@ import xyz.starmun.justenoughkeys.common.contracts.IJEKScreenExtensions;
 
 import java.util.List;
 
-@Mixin(Screen.class)
+@Mixin(value = Screen.class)
 public class ScreenMixin implements IJEKScreenExtensions {
     @Shadow
     @Final

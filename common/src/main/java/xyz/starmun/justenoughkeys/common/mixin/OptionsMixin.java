@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
@@ -25,7 +26,7 @@ import java.util.Iterator;
 @Mixin(Options.class)
 public class OptionsMixin {
     @Unique
-    private File jekOptionsFile;
+    private static File jekOptionsFile;
 
     @Final
     @Shadow
@@ -38,9 +39,10 @@ public class OptionsMixin {
     @Unique
     private static final Splitter VALUE_SPLITTER = Splitter.on(',');
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;load()V", shift = At.Shift.BEFORE))
-    public void init(Minecraft minecraft, File file, CallbackInfo ci) {
-        this.jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
+    @ModifyVariable(method = "<init>", at = @At(value = "HEAD" ))
+    private static File init(File file) {
+        jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
+        return file;
     }
 
     @Inject(method = "load", at = @At("TAIL"))
