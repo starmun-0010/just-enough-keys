@@ -117,7 +117,7 @@ public class JEKControlScreen extends ControlsScreen {
         }
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
         this.search.render(poseStack, i, j, f);
-        if (search.isMouseOver(i, j) && !search.isFocused()) {
+        if (search.isMouseOver(i, j)) {
             renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
         }
         font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
