@@ -14,8 +14,10 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import org.apache.commons.lang3.ArrayUtils;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
+import xyz.starmun.justenoughkeys.platform.TooltipUtilsExpectPlatform;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,6 +40,28 @@ public class JEKControlList extends ControlList {
         this.children().clear();
         this.initKeyMappings();
 
+    }
+
+    @Override
+    protected void renderDecorations(PoseStack poseStack, int mouseX, int mouseY) {
+        Entry entry = this.getJEKKeyEntryAtPos(mouseY);
+        if(!(entry instanceof JEKKeyEntry)) {
+            return;
+        }
+        JEKKeyEntry keyEntry = (JEKKeyEntry) entry;
+        TooltipUtilsExpectPlatform.renderTooltip(new TranslatableComponent(keyEntry.getCategory()), poseStack,mouseX,mouseY,minecraft.screen.width,minecraft.screen.height, minecraft.font);
+
+    }
+
+    public Entry getJEKKeyEntryAtPos(double mouseY) {
+        if(mouseY <=  y0 || mouseY >= y1) {
+            return null;
+        }
+        int i1 = Mth.floor(mouseY - (double) this.y0) - this.headerHeight + (int) this
+                .getScrollAmount() - 4;
+        int j1 = i1 / this.itemHeight;
+        return i1 >= 0 && j1 < this.getItemCount() ? this.children()
+                .get(j1) : null;
     }
 
     private void initKeyMappings() {
@@ -151,7 +175,9 @@ public class JEKControlList extends ControlList {
                 }
             };
         }
-
+        public String getCategory(){
+            return this.key.getCategory();
+        }
         @Override
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 

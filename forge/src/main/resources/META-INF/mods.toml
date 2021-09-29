@@ -6,7 +6,7 @@ license = "Insert License Here"
 [[mods]]
 modId = "justenoughkeys"
 version = "${version}"
-displayName = "Just Enough Items"
+displayName = "Just Enough Keys"
 authors = "starmun"
 description = '''
 Taking away your key conflicts.
