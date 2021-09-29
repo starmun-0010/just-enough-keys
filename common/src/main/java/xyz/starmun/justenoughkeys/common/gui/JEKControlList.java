@@ -63,7 +63,17 @@ public class JEKControlList extends ControlList {
         return i1 >= 0 && j1 < this.getItemCount() ? this.children()
                 .get(j1) : null;
     }
+    @Override
+    protected int getScrollbarPosition() {
 
+        return this.width - 50;
+    }
+
+    @Override
+    public int getRowWidth() {
+
+        return super.getRowWidth() + 32;
+    }
     private void initKeyMappings() {
         Arrays.stream(ArrayUtils.clone(minecraft.options.keyMappings))
                 .collect(Collectors.groupingBy(KeyMapping::getCategory, LinkedHashMap::new, Collectors.toList()))
@@ -181,14 +191,14 @@ public class JEKControlList extends ControlList {
         @Override
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 
-            int length = Math.max(0, x + 30 - JEKControlList.this.maxListLabelWidth);
+            int margin = Math.max(10, x + 30 - JEKControlList.this.maxListLabelWidth);
             JEKControlList.this.minecraft.font.getClass();
-            JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) length, (float) (y + rowWidth / 2 - 9 / 2), 16777215);
-            this.resetButton.x = x + 190 + 20;
+            JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) margin, (float) (y + rowWidth / 2), 16777215);
+            this.resetButton.x = width - (this.resetButton.getWidth() + margin + 45);
             this.resetButton.y = y;
             this.resetButton.active = !this.key.isDefault();
             this.resetButton.render(poseStack, mouseX, mouseY, partialTicks);
-            this.changeButton.x = x + 105;
+            this.changeButton.x = width - (this.resetButton.getWidth() + 5 + this.changeButton.getWidth() + margin + 45);
             this.changeButton.y = y;
             this.changeButton.setMessage(this.key.getTranslatedKeyMessage());
             this.setChangeButtonMessageStyle();
