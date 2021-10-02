@@ -3,7 +3,8 @@ package xyz.starmun.justenoughkeys.platform.forge;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.BaseComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 import java.util.Collections;
 

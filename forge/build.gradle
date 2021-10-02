@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 configurations {
@@ -11,27 +11,13 @@ architectury {
     forge()
 }
 
-loom {
-    mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
-    launches {
-        client {
-            property "fabric.log.level", "debug"
-        }
-        server {
-            property "fabric.log.level", "debug"
-        }
-    }
-}
-
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    //modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
-    modRuntime "curse.maven:jei-238222:3345971"
-    implementation(project(path: ":common")) {
+
+    implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
-    developmentForge(project(path: ":common")) {
+    developmentForge(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
@@ -62,10 +48,6 @@ remapJar {
 
 jar {
     classifier "dev"
-}
-
-java {
-    withSourcesJar()
 }
 
 sourcesJar {

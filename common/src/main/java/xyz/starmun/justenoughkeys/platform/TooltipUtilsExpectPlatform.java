@@ -1,7 +1,9 @@
 package xyz.starmun.justenoughkeys.platform;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+
+import dev.architectury.injectables.annotations.ExpectPlatform;
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.BaseComponent;
 import org.apache.commons.lang3.NotImplementedException;

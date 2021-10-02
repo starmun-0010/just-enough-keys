@@ -2,7 +2,6 @@ package xyz.starmun.justenoughkeys.common.mixin;
 
 import com.google.common.base.Splitter;
 import com.mojang.blaze3d.platform.InputConstants;
-import me.shedaniel.architectury.annotations.PlatformOnly;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -103,7 +102,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
                 cir.setReturnValue(false);
         }
     }
-    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "same", at=@At("TAIL"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
        if(!((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(modifierKeyMap)){
@@ -111,7 +109,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        }
     }
 
-    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "isDefault", at=@At("TAIL"),cancellable = true)
     public void isDefault(CallbackInfoReturnable<Boolean> cir){
        if(modifierKeyMap.any()){

@@ -8,18 +8,19 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Option;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.MouseSettingsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.network.chat.*;
-import net.minecraft.util.FormattedCharSequence;
+
 import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
+import xyz.starmun.justenoughkeys.common.contracts.IJEKScreenExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 
@@ -39,9 +40,10 @@ public class JEKControlScreen extends ControlsScreen {
     protected void init() {
         ControlList controlList = new JEKControlList(this, Minecraft.getInstance());
         ((IJEKControlScreenExtensions) this).jek$setControlList(controlList);
-        this.children.add(controlList);
-        this.setFocused(controlList);
-        this.toolTipComponent = new ArrayList<>();
+
+        this.toolTipComponent= new ArrayList<>();
+        this.addWidget(controlList);
+
         initWidgets();
 
     }
@@ -58,7 +60,7 @@ public class JEKControlScreen extends ControlsScreen {
                 search.setFocus(true);
                 return true;
             }
-           return search.keyPressed(keyValue, scanCode, modifiers) || super.keyPressed(keyValue, scanCode, modifiers);
+            return search.keyPressed(keyValue, scanCode, modifiers) || super.keyPressed(keyValue, scanCode, modifiers);
         }
         if (keyValue == GLFW.GLFW_KEY_ESCAPE) {
             ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().clear();
@@ -113,16 +115,17 @@ public class JEKControlScreen extends ControlsScreen {
         this.renderBackground(poseStack);
         ((IJEKControlScreenExtensions) this).jek$getControlList().render(poseStack, i, j, f);
         drawCenteredString(poseStack, this.font, this.title.getString(), this.width / 2, 8, 16777215);
-        for (AbstractWidget button : buttons) {
-            button.render(poseStack, i, j, f);
+        for(Widget widget : ((IJEKScreenExtensions)this).jek$getRenderables()) {
+            widget.render(poseStack, i, j, f);
         }
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j)) {
-            renderComponentTooltip(poseStack, this.toolTipComponent, i, j);
+
+            renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
+
         }
         font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
-
     }
 
     //Mostly copied over from the parent class
@@ -130,13 +133,13 @@ public class JEKControlScreen extends ControlsScreen {
         int labelWidth = Minecraft.getInstance().font.width(new TranslatableComponent("jek.controls.search.label"));
         this.search = new EditBox(this.font, this.width / 2 - 153 + labelWidth + 5, this.height - 50, 300 - labelWidth, 18, new TextComponent(""));
         this.search.setMaxLength(200);
-        this.addButton(new Button(this.width / 2 - 155, 18, 150, 20, new TranslatableComponent("options.mouse_settings"), (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 155, 18, 150, 20, new TranslatableComponent("options.mouse_settings"), (button) -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(new MouseSettingsScreen(this, this.options));
         }));
-        this.addButton(Option.AUTO_JUMP.createButton(this.options, this.width / 2 - 155 + 160, 18, 150));
+        this.addRenderableWidget(Option.AUTO_JUMP.createButton(this.options, this.width / 2 - 155 + 160, 18, 150));
         this.addWidget(search);
-        this.resetButton = this.addButton(new Button(this.width / 2 - 155, this.height - 29, 150, 20, new TranslatableComponent("controls.resetAll"), (button) -> {
+        this.resetButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height - 29, 150, 20, new TranslatableComponent("controls.resetAll"), (button) -> {
             for (KeyMapping keyMapping : this.options.keyMappings) {
                 keyMapping.setKey(keyMapping.getDefaultKey());
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
@@ -144,7 +147,7 @@ public class JEKControlScreen extends ControlsScreen {
             }
             IJEKKeyMappingExtensions.resetMapping();
         }));
-        this.addButton(new Button(this.width / 2 - 155 + 160, this.height - 29, 150, 20, CommonComponents.GUI_DONE, (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + 160, this.height - 29, 150, 20, CommonComponents.GUI_DONE, (button) -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(this.lastScreen);
         }));

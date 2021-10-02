@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import xyz.starmun.justenoughkeys.common.gui.JEKControlScreen;
 
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class)
 public class MinecraftMixin {
     @Shadow @Nullable public Screen screen;
 
