@@ -32,7 +32,6 @@ public class JEKControlList extends ControlList {
     private int maxListLabelWidth;
     private List<Entry> keyEntries = new ArrayList<>();
 
-
     public JEKControlList(ControlsScreen controlsScreen, Minecraft minecraft) {
 
         super(controlsScreen, minecraft);
@@ -57,15 +56,15 @@ public class JEKControlList extends ControlList {
         TooltipUtilsExpectPlatform.renderTooltip(new TranslatableComponent(keyEntry.getCategory()), poseStack,mouseX,mouseY,minecraft.screen.width,minecraft.screen.height, minecraft.font);
 
     }
+
     public Entry getJEKKeyEntryAtPos(double mouseY) {
         if(mouseY <=  y0 || mouseY >= y1) {
             return null;
         }
-        int i1 = Mth.floor(mouseY - (double) this.y0) - this.headerHeight + (int) this
-                .getScrollAmount() - 4;
-        int j1 = i1 / this.itemHeight;
-        return i1 >= 0 && j1 < this.getItemCount() ? this.children()
-                .get(j1) : null;
+
+        int relativeCursorPosition = Mth.floor(mouseY - (double) this.y0) - this.headerHeight + (int) this.getScrollAmount() - 4;
+        int keyEntryIndex = relativeCursorPosition / this.itemHeight;
+        return relativeCursorPosition >= 0 && keyEntryIndex < this.getItemCount() ? this.children().get(keyEntryIndex) : null;
     }
     @Override
     protected int getScrollbarPosition() {
@@ -75,8 +74,7 @@ public class JEKControlList extends ControlList {
 
     @Override
     public int getRowWidth() {
-
-        return super.getRowWidth() + 32;
+        return this.width - 60;
     }
     private void initKeyMappings() {
         Arrays.stream(ArrayUtils.clone(minecraft.options.keyMappings))
@@ -210,7 +208,7 @@ public class JEKControlList extends ControlList {
         @Override
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 
-            int margin = Math.max(10, x + 30 - JEKControlList.this.maxListLabelWidth);
+            int margin = 20;
             JEKControlList.this.minecraft.font.getClass();
             JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) margin, (float) (y + rowWidth / 2), 16777215);
             this.resetButton.x = width - (this.resetButton.getWidth() + margin + 45);

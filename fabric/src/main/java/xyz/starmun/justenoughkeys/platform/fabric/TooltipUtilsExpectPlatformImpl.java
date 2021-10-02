@@ -11,6 +11,7 @@ import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -162,11 +163,13 @@ public class TooltipUtilsExpectPlatformImpl {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
+
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
         buffer.vertex(mat, right,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
         buffer.vertex(mat,  left,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
         buffer.vertex(mat,  left, bottom, zLevel).color(  endRed,   endGreen,   endBlue,   endAlpha).endVertex();

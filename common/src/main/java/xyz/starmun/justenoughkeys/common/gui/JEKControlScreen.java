@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.network.chat.*;
+
 import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
@@ -39,8 +40,10 @@ public class JEKControlScreen extends ControlsScreen {
     protected void init() {
         ControlList controlList = new JEKControlList(this, Minecraft.getInstance());
         ((IJEKControlScreenExtensions) this).jek$setControlList(controlList);
+
         this.toolTipComponent= new ArrayList<>();
         this.addWidget(controlList);
+
         initWidgets();
 
     }
@@ -118,7 +121,9 @@ public class JEKControlScreen extends ControlsScreen {
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j)) {
+
             renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
+
         }
         font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
     }
@@ -147,6 +152,7 @@ public class JEKControlScreen extends ControlsScreen {
             this.minecraft.setScreen(this.lastScreen);
         }));
 
+
         this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.title").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_AQUA)));
         this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.description"));
         this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.title").withStyle(ChatFormatting.GRAY));
@@ -158,9 +164,8 @@ public class JEKControlScreen extends ControlsScreen {
         toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.prefix")
                 .withStyle(ChatFormatting.DARK_GRAY)
                 .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.query")
-                        .withStyle(ChatFormatting.GOLD))
+                .withStyle(ChatFormatting.GOLD))
                 .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.suffix")));
-
     }
 
     @Override
