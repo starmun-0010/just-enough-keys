@@ -22,7 +22,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.ArrayUtils;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
-import xyz.starmun.justenoughkeys.platform.TooltipUtilsExpectPlatform;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,8 +52,7 @@ public class JEKControlList extends ControlList {
             return;
         }
         JEKKeyEntry keyEntry = (JEKKeyEntry) entry;
-        TooltipUtilsExpectPlatform.renderTooltip(new TranslatableComponent(keyEntry.getCategory()), poseStack,mouseX,mouseY,minecraft.screen.width,minecraft.screen.height, minecraft.font);
-
+        controlsScreen.renderTooltip( poseStack,new TranslatableComponent(keyEntry.getCategory()),mouseX,mouseY);
     }
 
     public Entry getJEKKeyEntryAtPos(double mouseY) {
