@@ -86,7 +86,25 @@ publishing {
     repositories {
         maven {
             name = 'myRepo'
-            url = layout.buildDirectory.dir("repo")
+            url = layout.buildDirectory.dir('repo')
+        }
+    }
+}
+if(System.getenv('CURSE_DEPLOY')) {
+    curseforge {
+        apiKey = System.getenv('CURSE_DEPLOY')
+        //noinspection GroovyAssignabilityCheck
+        project {
+            id = project.curseforge_id
+            releaseType = "${release_type}"
+            addGameVersion "Forge"
+            addGameVersion "${minecraft_version}"
+            addGameVersion "${java_version}"
+            mainArtifact(remapJar){
+                displayName = "${archivesBaseName}-forge-${minecraft_version}-${mod_version}"
+            }
+            changelog = new File("${rootDir.toPath()}/changelog.md").text
+            changelogType = 'markdown'
         }
     }
 }
