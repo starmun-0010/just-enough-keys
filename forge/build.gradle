@@ -25,7 +25,7 @@ repositories {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
-    modImplementation "curse.maven:sophisticated-backpacks-422301:3541889"
+
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
