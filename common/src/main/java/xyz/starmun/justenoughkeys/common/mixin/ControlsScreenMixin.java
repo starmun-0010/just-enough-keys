@@ -1,24 +1,24 @@
 package xyz.starmun.justenoughkeys.common.mixin;
 
-import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
 
-@Mixin(ControlsScreen.class)
+@Mixin(KeyBindsScreen.class)
 public class ControlsScreenMixin implements IJEKControlScreenExtensions {
 
     @Shadow
-    private ControlList controlList;
+    private KeyBindsList keyBindsList;
 
     @Override
-    public ControlList jek$getControlList() {
-       return controlList;
+    public KeyBindsList jek$getControlList() {
+       return keyBindsList;
     }
 
     @Override
-    public void jek$setControlList(ControlList controlsList) {
-        this.controlList = controlsList;
+    public void jek$setControlList(KeyBindsList controlsList) {
+        this.keyBindsList = controlsList;
     }
 }

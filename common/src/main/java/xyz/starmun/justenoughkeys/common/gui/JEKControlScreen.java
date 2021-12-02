@@ -13,8 +13,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.MouseSettingsScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.network.chat.*;
 
 import org.lwjgl.glfw.GLFW;
@@ -26,7 +26,7 @@ import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 
 import java.util.*;
 
-public class JEKControlScreen extends ControlsScreen {
+public class JEKControlScreen extends KeyBindsScreen {
 
     private Button resetButton;
     private EditBox search;
@@ -38,7 +38,7 @@ public class JEKControlScreen extends ControlsScreen {
     }
 
     protected void init() {
-        ControlList controlList = new JEKControlList(this, Minecraft.getInstance());
+        KeyBindsList controlList = new JEKControlList(this, Minecraft.getInstance());
         ((IJEKControlScreenExtensions) this).jek$setControlList(controlList);
 
         this.toolTipComponent= new ArrayList<>();

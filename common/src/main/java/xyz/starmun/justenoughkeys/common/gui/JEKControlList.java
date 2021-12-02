@@ -3,7 +3,6 @@ package xyz.starmun.justenoughkeys.common.gui;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -12,9 +11,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.OptionsSubScreen;
-import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
@@ -27,12 +25,12 @@ import xyz.starmun.justenoughkeys.platform.TooltipUtilsExpectPlatform;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JEKControlList extends ControlList {
-    private final ControlsScreen controlsScreen;
+public class JEKControlList extends KeyBindsList {
+    private final KeyBindsScreen controlsScreen;
     private int maxListLabelWidth;
     private List<Entry> keyEntries = new ArrayList<>();
 
-    public JEKControlList(ControlsScreen controlsScreen, Minecraft minecraft) {
+    public JEKControlList(KeyBindsScreen controlsScreen, Minecraft minecraft) {
 
         super(controlsScreen, minecraft);
         this.width = controlsScreen.width + 45;
@@ -129,7 +127,7 @@ public class JEKControlList extends ControlList {
     }
 
 
-    public class JKECategoryEntry extends ControlList.Entry {
+    public class JKECategoryEntry extends KeyBindsList.Entry {
         private final String labelText;
         private final int labelWidth;
         private final String name;
@@ -167,7 +165,7 @@ public class JEKControlList extends ControlList {
         }
     }
 
-    public class JEKKeyEntry extends ControlList.Entry {
+    public class JEKKeyEntry extends KeyBindsList.Entry {
 
         private final KeyMapping key;
         private final Button changeButton;

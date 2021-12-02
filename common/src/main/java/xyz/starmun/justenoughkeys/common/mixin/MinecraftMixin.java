@@ -3,6 +3,7 @@ package xyz.starmun.justenoughkeys.common.mixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +18,7 @@ public class MinecraftMixin {
     @ModifyVariable(method = "setScreen", at=@At("HEAD"))
     public Screen setScreen(Screen screen){
         try {
-            if(screen instanceof ControlsScreen && !(screen instanceof JEKControlScreen)) {
+            if(screen instanceof KeyBindsScreen && !(screen instanceof JEKControlScreen)) {
                 JEKControlScreen controlsScreen = new JEKControlScreen(Minecraft.getInstance().screen, Minecraft.getInstance().options);
                 return controlsScreen;
             }
