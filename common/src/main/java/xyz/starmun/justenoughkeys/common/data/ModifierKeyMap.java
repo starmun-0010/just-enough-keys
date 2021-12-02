@@ -51,10 +51,13 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
         return IJEKKeyMappingExtensions.CURRENT_PRESSED_MODIFIERS.bitSet.equals(this.bitSet);
     }
     public void setAll(){
-        ModifierKey.MODIFIER_KEYS.values()
-                .forEach(modifierKey ->  set(ModifierKey.modifierKeyFromValue(modifierKey.value)
-                        ,InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), modifierKey.value)));
-
+        ModifierKey.MODIFIER_KEYS.values().forEach(modifierKey -> {
+            if (modifierKey == ModifierKey.UNKNOWN) {
+                return;
+            }
+            set(ModifierKey.modifierKeyFromValue(modifierKey.value),
+                    InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), modifierKey.value));
+        });
     }
 
     public boolean search(String allParametersStrippedQuery) {
