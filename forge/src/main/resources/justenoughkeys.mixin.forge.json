@@ -4,5 +4,6 @@
   "minVersion": "0.6",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "ForgeKeyMappingMixin"
   ]
 }
