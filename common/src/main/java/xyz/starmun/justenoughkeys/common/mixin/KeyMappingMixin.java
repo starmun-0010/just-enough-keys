@@ -61,7 +61,8 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     @Unique
     private ModifierKey platformDefaultModifierKey = ModifierKey.UNKNOWN;
-    @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("RETURN"))
+    @SuppressWarnings("ConstantConditions")
+    @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
         IJEKKeyMappingExtensions.ALL.put(this.name,(KeyMapping)(Comparable<KeyMapping>)this);
         IJEKKeyMappingExtensions.initMAP((KeyMapping)(Comparable<KeyMapping>)this);
@@ -77,7 +78,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
         IJEKKeyMappingExtensions.set(key, pressed);
         ci.cancel();
     }
-    @Inject(method = "getTranslatedKeyMessage", at=@At("INVOKE"),cancellable = true)
+    @Inject(method = "getTranslatedKeyMessage", at=@At("HEAD"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
         TextComponent displayText = new TextComponent("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
@@ -90,14 +91,14 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
         displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
         cir.setReturnValue(displayText);
     }
-    @Inject(method = "matches", at=@At("INVOKE"),cancellable = true)
+    @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
         if (modifierKeyMap.any() && !modifierKeyMap.isPressed()){
                 cir.setReturnValue(false);
         }
     }
 
-    @Inject(method = "matchesMouse", at=@At("INVOKE"),cancellable = true)
+    @Inject(method = "matchesMouse", at=@At("HEAD"),cancellable = true)
     public void matchesMouse(int i, CallbackInfoReturnable<Boolean> cir) {
         if (modifierKeyMap.any() && !modifierKeyMap.isPressed()){
                 cir.setReturnValue(false);
