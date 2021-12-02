@@ -57,7 +57,7 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
     @Inject(method = "isDefault", at=@At("HEAD"),cancellable = true)
     public void isDefault(CallbackInfoReturnable<Boolean> cir){
         ModifierKeyMap keyMap =((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap();
-        KeyModifier defaultKeyModifier = ((KeyMapping)(Comparable<KeyMapping>)this).getKeyModifierDefault();
+        KeyModifier defaultKeyModifier = ((KeyMapping)(Comparable<KeyMapping>)this).getDefaultKeyModifier();
         if(( keyMap.size() > 1
                 ||defaultKeyModifier ==  KeyModifier.NONE && keyMap.any())
                 ||(keyMap.size() == 1 && !keyMap.containsKey(getModifierKeyFromKeyModifier(defaultKeyModifier).id))
