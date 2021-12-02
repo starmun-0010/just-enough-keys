@@ -87,12 +87,13 @@ publishing {
 if(System.getenv('CURSE_DEPLOY')) {
     curseforge {
         apiKey = System.getenv('CURSE_DEPLOY')
+        //noinspection GroovyAssignabilityCheck
         project {
             id = project.curseforge_id
-            releaseType = "beta"
+            releaseType = "${release_type}"
             addGameVersion "Fabric"
             addGameVersion "${minecraft_version}"
-            addGameVersion "Java 8"
+            addGameVersion "${java_version}"
             mainArtifact(remapJar){
 
                 displayName = "${archivesBaseName}-fabric-${minecraft_version}-${mod_version}"
