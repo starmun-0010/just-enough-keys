@@ -84,3 +84,24 @@ publishing {
         }
     }
 }
+if(System.getenv('CURSE_DEPLOY')) {
+    curseforge {
+        apiKey = System.getenv('CURSE_DEPLOY')
+        project {
+            id = project.curseforge_id
+            releaseType = "beta"
+            addGameVersion "Fabric"
+            addGameVersion "${minecraft_version}"
+            addGameVersion "Java 8"
+            mainArtifact(remapJar){
+
+                displayName = "${archivesBaseName}-fabric-${minecraft_version}-${mod_version}"
+            }
+            changelog = new File("${rootDir.toPath()}/changelog.md").text
+            changelogType = 'markdown'
+            relations {
+                requiredDependency 'fabric-api'
+            }
+        }
+    }
+}
