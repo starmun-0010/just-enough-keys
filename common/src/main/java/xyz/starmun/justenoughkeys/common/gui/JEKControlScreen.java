@@ -123,13 +123,9 @@ public class JEKControlScreen extends ControlsScreen {
         drawCenteredString(poseStack,this.font, new TranslatableComponent("jek.controls.search.help.label"),this.width / 2, this.height-40,16777215);
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j)) {
-
             renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
-
         }
-        font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
         drawString(poseStack,this.font, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 60, 16777215);
-
     }
 
     //Mostly copied over from the parent class
