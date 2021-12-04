@@ -32,7 +32,7 @@ public class JEKControlList extends ControlList {
         this.width = controlsScreen.width + 45;
         this.height = controlsScreen.height;
         this.y0 = 43;
-        this.y1 = controlsScreen.height - 60;
+        this.y1 = controlsScreen.height - 70;
         this.x1 = controlsScreen.width + 45;
         this.controlsScreen = controlsScreen;
         this.children().clear();

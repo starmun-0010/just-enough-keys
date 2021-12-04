@@ -31,7 +31,7 @@ public class JEKControlScreen extends ControlsScreen {
     private EditBox search;
     private String searchQuery = "";
     private List<Component> toolTipComponent;
-
+    private int labelWidth;
     public JEKControlScreen(Screen screen, Options options) {
         super(screen, options);
     }
@@ -117,18 +117,20 @@ public class JEKControlScreen extends ControlsScreen {
             button.render(poseStack, i, j, f);
         }
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
+
+        drawCenteredString(poseStack,this.font, new TranslatableComponent("jek.controls.search.help.label"),this.width / 2, this.height-40,16777215);
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j)) {
             renderComponentTooltip(poseStack, this.toolTipComponent, i, j);
         }
-        font.draw(poseStack, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 45, 16777215);
+        drawString(poseStack,this.font, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 60, 16777215);
 
     }
 
     //Mostly copied over from the parent class
     private void initWidgets() {
-        int labelWidth = Minecraft.getInstance().font.width(new TranslatableComponent("jek.controls.search.label"));
-        this.search = new EditBox(this.font, this.width / 2 - 153 + labelWidth + 5, this.height - 50, 300 - labelWidth, 18, new TextComponent(""));
+        labelWidth = Minecraft.getInstance().font.width(new TranslatableComponent("jek.controls.search.label"));
+        this.search = new EditBox(this.font, this.width / 2 - 153 + labelWidth + 5, this.height - 65, 300 - labelWidth, 18, new TextComponent(""));
         this.search.setMaxLength(200);
         this.addButton(new Button(this.width / 2 - 155, 18, 150, 20, new TranslatableComponent("options.mouse_settings"), (button) -> {
             assert this.minecraft != null;
