@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
@@ -21,7 +22,7 @@ import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 import java.util.Iterator;
 
 
-@Mixin(KeyMapping.class)
+@Mixin(value = KeyMapping.class,priority = 999)
 public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMappingExtensions {
 
     @Shadow
@@ -68,6 +69,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "click", at=@At("HEAD"), cancellable = true)
     private static void click(InputConstants.Key key, CallbackInfo ci) {
+        JustEnoughKeys.LOGGER.info("hitcl,,ikc");
         IJEKKeyMappingExtensions.click(key);
         ci.cancel();
     }
