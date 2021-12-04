@@ -96,10 +96,6 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return null;
     }
 
-    @Shadow
-    public KeyModifier getKeyModifierDefault() {
-        return null;
-    }
 
     @Shadow
     public KeyModifier getKeyModifier() {
