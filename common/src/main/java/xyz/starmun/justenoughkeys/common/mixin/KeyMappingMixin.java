@@ -70,7 +70,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "click", at=@At("HEAD"), cancellable = true)
     private static void click(InputConstants.Key key, CallbackInfo ci) {
-        JustEnoughKeys.LOGGER.info("hitcl,,ikc");
         IJEKKeyMappingExtensions.click(key);
         ci.cancel();
     }
