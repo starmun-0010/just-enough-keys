@@ -39,8 +39,7 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return keyCode != InputConstants.UNKNOWN
                 && keyCode.equals(getKey())
                 && getKeyConflictContext().isActive()
-                && (!((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().any()
-                    || ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed());
+                && ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed();
     }
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
@@ -84,6 +83,7 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         }
         return ModifierKey.UNKNOWN;
     }
+    @SuppressWarnings({"NullableProblems", "ConstantConditions"})
     @Shadow
     public InputConstants.Key getKey() {
         return null;
