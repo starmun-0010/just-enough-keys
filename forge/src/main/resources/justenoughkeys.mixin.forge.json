@@ -4,9 +4,10 @@
   "minVersion": "0.6",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ForgeKeyMappingMixin"
+
   ],
   "client": [
+    "ForgeKeyMappingMixin",
     "AbstractContainerScreenMixin"
   ]
 }

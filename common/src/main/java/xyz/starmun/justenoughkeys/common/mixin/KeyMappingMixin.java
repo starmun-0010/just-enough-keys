@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
@@ -84,12 +83,23 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
         TextComponent displayText = new TextComponent("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
-        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
-            Iterator<String> iterator = NAME_SPLITTER.split(InputConstants.getKey(modifierKey.getName()).getDisplayName().getString()).iterator();
+        Integer[] keyIndexes = this.jek$getModifierKeyMap().keySet().toArray(new Integer[0]);
+        for(int i = 0; i< keyIndexes.length; i++){
+            Iterator<String> iterator = NAME_SPLITTER.split(ModifierKey.MODIFIER_KEYS.get(keyIndexes[i]).getDisplayName()).iterator();
             iterator.forEachRemaining(string-> displayText.append(string.substring(0,1)));
-            displayText.append(new TextComponent("+"));
+           if(i!=keyIndexes.length-1){
+               displayText.append(new TextComponent("+"));
+           }
+        }
+        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
+
         });
-        displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            if(keyIndexes.length>0){
+                displayText.append(new TextComponent("+"));
+            }
+            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        }
         cir.setReturnValue(displayText);
     }
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
