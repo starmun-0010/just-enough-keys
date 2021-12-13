@@ -36,7 +36,11 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
 
     @Override
     public boolean isActiveAndMatches(InputConstants.Key keyCode) {
-        return keyCode != InputConstants.UNKNOWN && keyCode.equals(getKey()) && getKeyConflictContext().isActive() && ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed();
+        return keyCode != InputConstants.UNKNOWN
+                && keyCode.equals(getKey())
+                && getKeyConflictContext().isActive()
+                && (!((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().any()
+                    || ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed());
     }
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
