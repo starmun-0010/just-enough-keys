@@ -3,8 +3,6 @@ package xyz.starmun.justenoughkeys.common.data;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
 import java.util.BitSet;

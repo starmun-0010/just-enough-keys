@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 
 import java.util.*;
@@ -45,7 +44,6 @@ public interface IJEKKeyMappingExtensions {
     }
 
     static void set(InputConstants.Key key, boolean pressed) {
-        CURRENT_PRESSED_MODIFIERS.set(ModifierKey.modifierKeyFromValue(key.getValue()), pressed);
         if (!pressed) {
             Queue<KeyMapping> keyMappings = MAP.get(key);
             if (keyMappings != null) {

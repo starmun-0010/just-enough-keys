@@ -10,7 +10,9 @@
     "ControlsScreenMixin",
     "OptionsMixin",
     "MinecraftMixin",
-    "ScreenMixin"
+    "ScreenMixin",
+    "KeyboardHandlerMixin",
+    "AbstractContainerScreenMixin"
    ],
   "injectors": {
     "defaultRequire": 1
