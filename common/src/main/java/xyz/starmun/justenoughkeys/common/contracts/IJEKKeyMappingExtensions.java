@@ -19,11 +19,10 @@ public interface IJEKKeyMappingExtensions {
     void jek$setClickCount(int i);
 
     int jek$getClickCount();
-    default ModifierKey getPlatformDefaultModifierKey(){
-        return ModifierKey.UNKNOWN;
+    default ModifierKeyMap jek$getDefaultModifierKeyMap(){
+        return new ModifierKeyMap();
     }
-    default void setPlatformDefaultModifierKey(ModifierKey modifierKey){
-        return ;
+    default void setDefaultModifierKeyMap(ModifierKeyMap modifierKey){
     }
     Map<String, KeyMapping> ALL = Maps.newHashMap();
     Map<InputConstants.Key, ConcurrentLinkedQueue<KeyMapping>> MAP = Maps.newHashMap();

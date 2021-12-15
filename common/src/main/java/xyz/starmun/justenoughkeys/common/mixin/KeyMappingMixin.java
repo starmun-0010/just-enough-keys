@@ -47,20 +47,19 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        return clickCount;
     }
     @Override
-    public ModifierKey getPlatformDefaultModifierKey(){
-        return this.platformDefaultModifierKey;
+    public ModifierKeyMap jek$getDefaultModifierKeyMap(){
+        return this.defaultModifierKeyMap;
     }
 
     @Override
-    public void setPlatformDefaultModifierKey(ModifierKey modifierKey) {
-        this.platformDefaultModifierKey = modifierKey;
+    public void setDefaultModifierKeyMap(ModifierKeyMap modifierKey) {
+        this.defaultModifierKeyMap = modifierKey;
     }
 
     @Unique
-    private ModifierKeyMap modifierKeyMap = new ModifierKeyMap();
-
+    private final ModifierKeyMap modifierKeyMap = new ModifierKeyMap();
     @Unique
-    private ModifierKey platformDefaultModifierKey = ModifierKey.UNKNOWN;
+    private ModifierKeyMap defaultModifierKeyMap = new ModifierKeyMap();
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
@@ -104,7 +103,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
-        if (modifierKeyMap.any() && !modifierKeyMap.isPressed()){
+        if(!modifierKeyMap.isPressed()){
                 cir.setReturnValue(false);
         }
     }

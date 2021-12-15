@@ -140,6 +140,7 @@ public class JEKControlList extends ControlList {
         }
 
         public void render(PoseStack stack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+            assert JEKControlList.this.minecraft.screen != null;
             JEKControlList.this.minecraft.font.draw(stack, this.labelText, (float) (JEKControlList.this.minecraft.screen.width / 2 - this.labelWidth / 2), (float) (y + rowWidth - 9 - 1), 16777215);
         }
     }
@@ -169,7 +170,7 @@ public class JEKControlList extends ControlList {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
-                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).getPlatformDefaultModifierKey(),true);
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).jek$getDefaultModifierKeyMap());
 
             }) {
                 @Override
@@ -185,7 +186,6 @@ public class JEKControlList extends ControlList {
         public void render(PoseStack poseStack, int slotIndex, int y, int x, int rowLeft, int rowWidth, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 
             int margin = 20;
-            JEKControlList.this.minecraft.font.getClass();
             JEKControlList.this.minecraft.font.draw(poseStack, this.name, (float) margin, (float) (y + rowWidth / 2), 16777215);
             this.resetButton.x = width - (this.resetButton.getWidth() + margin + 45);
             this.resetButton.y = y;

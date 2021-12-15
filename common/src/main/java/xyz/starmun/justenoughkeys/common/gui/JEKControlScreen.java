@@ -16,7 +16,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.network.chat.*;
-import net.minecraft.util.FormattedCharSequence;
 import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
@@ -135,7 +134,7 @@ public class JEKControlScreen extends ControlsScreen {
             for (KeyMapping keyMapping : this.options.keyMappings) {
                 keyMapping.setKey(keyMapping.getDefaultKey());
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
-                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions) keyMapping).getPlatformDefaultModifierKey(), true);
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions) keyMapping).jek$getDefaultModifierKeyMap());
             }
             IJEKKeyMappingExtensions.resetMapping();
         }));
