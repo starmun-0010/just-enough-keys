@@ -2,6 +2,7 @@ package xyz.starmun.justenoughkeys.common.mixin;
 
 import com.google.common.base.Splitter;
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.architectury.injectables.annotations.PlatformOnly;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -14,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
@@ -47,20 +47,19 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        return clickCount;
     }
     @Override
-    public ModifierKey getPlatformDefaultModifierKey(){
-        return this.platformDefaultModifierKey;
+    public ModifierKeyMap jek$getDefaultModifierKeyMap(){
+        return this.defaultModifierKeyMap;
     }
 
     @Override
-    public void setPlatformDefaultModifierKey(ModifierKey modifierKey) {
-        this.platformDefaultModifierKey = modifierKey;
+    public void setDefaultModifierKeyMap(ModifierKeyMap modifierKey) {
+        this.defaultModifierKeyMap = modifierKey;
     }
 
     @Unique
-    private ModifierKeyMap modifierKeyMap = new ModifierKeyMap();
-
+    private final ModifierKeyMap modifierKeyMap = new ModifierKeyMap();
     @Unique
-    private ModifierKey platformDefaultModifierKey = ModifierKey.UNKNOWN;
+    private ModifierKeyMap defaultModifierKeyMap = new ModifierKeyMap();
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
@@ -83,17 +82,28 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
         TextComponent displayText = new TextComponent("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
-        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
-            Iterator<String> iterator = NAME_SPLITTER.split(InputConstants.getKey(modifierKey.getName()).getDisplayName().getString()).iterator();
+        Integer[] keyIndexes = this.jek$getModifierKeyMap().keySet().toArray(new Integer[0]);
+        for(int i = 0; i< keyIndexes.length; i++){
+            Iterator<String> iterator = NAME_SPLITTER.split(ModifierKey.MODIFIER_KEYS.get(keyIndexes[i]).getDisplayName()).iterator();
             iterator.forEachRemaining(string-> displayText.append(string.substring(0,1)));
-            displayText.append(new TextComponent("+"));
+           if(i!=keyIndexes.length-1){
+               displayText.append(new TextComponent("+"));
+           }
+        }
+        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
+
         });
-        displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            if(keyIndexes.length>0){
+                displayText.append(new TextComponent("+"));
+            }
+            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        }
         cir.setReturnValue(displayText);
     }
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
-        if (modifierKeyMap.any() && !modifierKeyMap.isPressed()){
+        if(!modifierKeyMap.isPressed()){
                 cir.setReturnValue(false);
         }
     }
@@ -104,13 +114,14 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
                 cir.setReturnValue(false);
         }
     }
+    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "same", at=@At("TAIL"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
        if(!((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(modifierKeyMap)){
           cir.setReturnValue(false);
        }
     }
-
+    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "isDefault", at=@At("TAIL"),cancellable = true)
     public void isDefault(CallbackInfoReturnable<Boolean> cir){
        if(modifierKeyMap.any()){

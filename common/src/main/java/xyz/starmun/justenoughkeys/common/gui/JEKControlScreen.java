@@ -65,19 +65,12 @@ public class JEKControlScreen extends KeyBindsScreen {
         if (keyValue == GLFW.GLFW_KEY_ESCAPE) {
             ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().clear();
 
-        } else if (selectedKey.isUnbound()) {
-            options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
         } else {
-            int currentModifierKeyValue = ((IJEKKeyMappingExtensions) selectedKey).jek$getKey().getValue();
-            ModifierKey currentModifierKey = ModifierKey.modifierKeyFromValue(currentModifierKeyValue);
-            ModifierKey currentKey = ModifierKey.modifierKeyFromValue(keyValue);
-            if (currentModifierKey != ModifierKey.UNKNOWN && currentKey == ModifierKey.UNKNOWN) {
-                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().set(currentModifierKey, true);
-                options.setKey(selectedKey, InputConstants.getKey(keyValue, scanCode));
-            } else {
-                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().set(currentKey, true);
-                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().clear(selectedKey);
+            InputConstants.Key currentlyPressedKey = InputConstants.getKey(keyValue, scanCode);
+            if(ModifierKey.isModifierKey(currentlyPressedKey)){
+                ((IJEKKeyMappingExtensions) selectedKey).jek$getModifierKeyMap().set(ModifierKey.modifierKeyFromValue(keyValue), true);
             }
+            options.setKey(selectedKey, currentlyPressedKey);
         }
         lastKeySelection = Util.getMillis();
         IJEKKeyMappingExtensions.resetMapping();
@@ -143,7 +136,7 @@ public class JEKControlScreen extends KeyBindsScreen {
             for (KeyMapping keyMapping : this.options.keyMappings) {
                 keyMapping.setKey(keyMapping.getDefaultKey());
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
-                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions) keyMapping).getPlatformDefaultModifierKey(), true);
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions) keyMapping).jek$getDefaultModifierKeyMap());
             }
             IJEKKeyMappingExtensions.resetMapping();
         }));

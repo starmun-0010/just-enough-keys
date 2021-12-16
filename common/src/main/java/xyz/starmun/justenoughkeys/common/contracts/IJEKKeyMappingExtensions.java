@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 
 import java.util.*;
@@ -19,11 +18,10 @@ public interface IJEKKeyMappingExtensions {
     void jek$setClickCount(int i);
 
     int jek$getClickCount();
-    default ModifierKey getPlatformDefaultModifierKey(){
-        return ModifierKey.UNKNOWN;
+    default ModifierKeyMap jek$getDefaultModifierKeyMap(){
+        return new ModifierKeyMap();
     }
-    default void setPlatformDefaultModifierKey(ModifierKey modifierKey){
-        return ;
+    default void setDefaultModifierKeyMap(ModifierKeyMap modifierKey){
     }
     Map<String, KeyMapping> ALL = Maps.newHashMap();
     Map<InputConstants.Key, ConcurrentLinkedQueue<KeyMapping>> MAP = Maps.newHashMap();
@@ -46,7 +44,6 @@ public interface IJEKKeyMappingExtensions {
     }
 
     static void set(InputConstants.Key key, boolean pressed) {
-        CURRENT_PRESSED_MODIFIERS.set(ModifierKey.modifierKeyFromValue(key.getValue()), pressed);
         if (!pressed) {
             Queue<KeyMapping> keyMappings = MAP.get(key);
             if (keyMappings != null) {

@@ -3,15 +3,17 @@
   "package": "xyz.starmun.justenoughkeys.common.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+  ],
+  "client": [
     "KeyMappingMixin",
     "OptionsSubScreenMixin",
     "ControlsScreenMixin",
     "OptionsMixin",
     "MinecraftMixin",
-    "ScreenMixin"
-  ],
-  "client": [
-  ],
+    "ScreenMixin",
+    "KeyboardHandlerMixin",
+    "AbstractContainerScreenMixin"
+   ],
   "injectors": {
     "defaultRequire": 1
   },

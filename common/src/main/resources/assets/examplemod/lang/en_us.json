@@ -11,5 +11,6 @@
   "jek.controls.search.tooltip.advanced.example.prefix": "e.g ",
   "jek.controls.search.tooltip.advanced.example.query": "^c @c jei ",
   "jek.controls.search.tooltip.advanced.example.suffix": "will search for all conflicting keys in category jei.",
-  "jek.controls.search.help.label": "Advanced tokens: ^c (conflicts), ^u (unbound), @k <key name>,  @c <category/mod name>"
+  "jek.controls.search.help.label": "Advanced tokens: ^c (conflicts), ^u (unbound), @k <key name>,  @c <category/mod name>",
+  "key.justenoughkeys.dropstack": "Drop Selected Stack"
 }
