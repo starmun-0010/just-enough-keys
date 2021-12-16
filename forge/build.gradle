@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
@@ -25,6 +26,9 @@ repositories {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+    modRuntime "curse.maven:jei-238222:3564653"
+    modRuntime "curse.maven:sophisticated-backpacks-422301:3476261"
+    modRuntime "curse.maven:journeymap-32274:3509575"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false

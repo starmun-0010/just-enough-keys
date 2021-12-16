@@ -15,12 +15,12 @@ public class ModifierKey {
     public static final HashMap<Integer, ModifierKey> MODIFIER_KEYS = new HashMap<>();
 
     public static final ModifierKey UNKNOWN = new ModifierKey(1, "UNKNOWN", GLFW.GLFW_KEY_UNKNOWN);
-    public static final ModifierKey KEYBOARD_LEFT_ALT = new ModifierKey(105, "LEFT ALT", GLFW.GLFW_KEY_LEFT_ALT);
-    public static final ModifierKey KEYBOARD_LEFT_CONTROL = new ModifierKey(106, "LEFT CTRL", GLFW.GLFW_KEY_LEFT_CONTROL);
-    public static final ModifierKey KEYBOARD_LEFT_SHIFT = new ModifierKey(107, "LEFT SHIFT", GLFW.GLFW_KEY_LEFT_SHIFT);
-    public static final ModifierKey KEYBOARD_RIGHT_ALT = new ModifierKey(109, "RIGHT ALT", GLFW.GLFW_KEY_RIGHT_ALT);
-    public static final ModifierKey KEYBOARD_RIGHT_CONTROL = new ModifierKey(110, "RIGHT CTRL", GLFW.GLFW_KEY_RIGHT_CONTROL);
-    public static final ModifierKey KEYBOARD_RIGHT_SHIFT = new ModifierKey(111, "RIGHT SHIFT", GLFW.GLFW_KEY_RIGHT_SHIFT);
+    public static final ModifierKey KEYBOARD_LEFT_ALT = new ModifierKey(GLFW.GLFW_KEY_LEFT_ALT, "LEFT ALT", GLFW.GLFW_KEY_LEFT_ALT);
+    public static final ModifierKey KEYBOARD_LEFT_CONTROL = new ModifierKey(GLFW.GLFW_KEY_LEFT_CONTROL, "LEFT CTRL", GLFW.GLFW_KEY_LEFT_CONTROL);
+    public static final ModifierKey KEYBOARD_LEFT_SHIFT = new ModifierKey(GLFW.GLFW_KEY_LEFT_SHIFT, "LEFT SHIFT", GLFW.GLFW_KEY_LEFT_SHIFT);
+    public static final ModifierKey KEYBOARD_RIGHT_ALT = new ModifierKey(GLFW.GLFW_KEY_RIGHT_ALT, "RIGHT ALT", GLFW.GLFW_KEY_RIGHT_ALT);
+    public static final ModifierKey KEYBOARD_RIGHT_CONTROL = new ModifierKey(GLFW.GLFW_KEY_RIGHT_CONTROL, "RIGHT CTRL", GLFW.GLFW_KEY_RIGHT_CONTROL);
+    public static final ModifierKey KEYBOARD_RIGHT_SHIFT = new ModifierKey(GLFW.GLFW_KEY_RIGHT_SHIFT, "RIGHT SHIFT", GLFW.GLFW_KEY_RIGHT_SHIFT);
 
     private ModifierKey(int id, String name, int value) {
         this.id = id;

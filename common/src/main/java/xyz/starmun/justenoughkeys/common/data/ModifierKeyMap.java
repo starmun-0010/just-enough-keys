@@ -3,8 +3,6 @@ package xyz.starmun.justenoughkeys.common.data;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import org.lwjgl.glfw.GLFW;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
 import java.util.BitSet;
@@ -15,6 +13,15 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
 
     private final BitSet bitSet = new BitSet();
 
+    public void set(ModifierKeyMap modifierKeyMap){
+        modifierKeyMap.forEach((integer, modifierKey) -> {
+            if(modifierKey== ModifierKey.UNKNOWN){
+                return;
+            }
+            bitSet.set(modifierKey.id, true);
+            super.put(modifierKey.id, modifierKey);
+        });
+    }
     public ModifierKey set(ModifierKey key, boolean isPressed){
         if(key== ModifierKey.UNKNOWN)
             return ModifierKey.UNKNOWN;
