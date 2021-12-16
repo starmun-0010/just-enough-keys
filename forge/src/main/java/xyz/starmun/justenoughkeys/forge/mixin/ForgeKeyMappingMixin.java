@@ -46,9 +46,9 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
-        if(this.getKeyConflictContext().conflicts(keyMapping.getKeyConflictContext())
+        if((this.getKeyConflictContext().conflicts(keyMapping.getKeyConflictContext())||keyMapping.getKeyConflictContext().conflicts(this.getKeyConflictContext()))
                 && ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap())
-                && this.key.equals(keyMapping.getKey())){
+                && this.key.equals(keyMapping.getKey())) {
             cir.setReturnValue(true);
             return;
         }
