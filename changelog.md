@@ -5,7 +5,7 @@
 - Fixed forge conflict checks
 - Updated the search algorithm, results should be more relevant and better sorted
 - Implemented JEKKeyMapping api for multi-modifier keys
-
+- RU translation, thanks to [DrHesperus](https://github.com/DrHesperus?tab=repositories)
 
 ## JEK 0.4.2 to 0.4.3
 - Removed accidental log spam

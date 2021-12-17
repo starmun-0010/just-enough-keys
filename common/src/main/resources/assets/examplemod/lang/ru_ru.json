@@ -1,0 +1,16 @@
+{
+  "jek.controls.search.label": "Поиск:",
+  "jek.controls.search.tooltip.title": "Просто поиск.",
+  "jek.controls.search.tooltip.description": "Чтобы найти любой элемент управления введи его название.",
+  "jek.controls.search.tooltip.advanced.title": "Расширенный поиск",
+  "jek.controls.search.tooltip.advanced.description": "Следующие атрибуты помогут с расширенным поиском.",
+  "jek.controls.search.tooltip.advanced.filters.title": "Фильтры",
+  "jek.controls.search.tooltip.advanced.filters.description": "Не привязан (^u), Конфликты (^c)",
+  "jek.controls.search.tooltip.advanced.searchby.title": "Поиск по",
+  "jek.controls.search.tooltip.advanced.searchby.description": "Клавише (@k), Категории (@c)",
+  "jek.controls.search.tooltip.advanced.example.prefix": "например ",
+  "jek.controls.search.tooltip.advanced.example.query": "^c @c jei ",
+  "jek.controls.search.tooltip.advanced.example.suffix": "будет искать все конфликтующие клавиши в категории jei.",
+  "jek.controls.search.help.label": "Расширенные атрибуты: ^c (конфликты), ^u (не привязан), @k <название клавиши>,  @c <название категории/мода>",
+  "key.justenoughkeys.dropstack": "Выбросить выбранную стопку"
+}
