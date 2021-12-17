@@ -100,9 +100,11 @@ public class JEKControlList extends ControlList {
                                 //no filter
                                 (!query.contains("^u") && ! query.contains("^c"))
                                 //Filter by unbound
-                                || ((query.startsWith("^u") || query.contains(" ^u ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).key.isUnbound())
+                                || ((query.contains("^u"))
+                                        && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).key.isUnbound())
                                 //Filter by conflicted
-                                || ((query.startsWith("^c") || query.contains(" ^c ")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).isConflicted)
+                                || ((query.contains("^c"))
+                                        && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).isConflicted)
 
                         )
                         && //Search by
@@ -110,13 +112,43 @@ public class JEKControlList extends ControlList {
                                 //no search query, just filters
                                 filterParametersStrippedQuery.isEmpty()
                                 //search by name
-                                || ((!query.contains("@c") && !query.contains("@k")) && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry).name.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))
+                                ||((!query.contains("@c") && !query.contains("@k"))
+                                        && entry instanceof JEKKeyEntry && ((JEKKeyEntry) entry)
+                                        .name.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))
                                 //search by category
-                                ||((query.startsWith("@c ") || query.contains(" @c ")) && ((entry instanceof JKECategoryEntry && ((JKECategoryEntry) entry).labelText.toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery)) || (entry instanceof JEKKeyEntry && I18n.get(((JEKKeyEntry) entry).key.getCategory()).toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))))
+                                ||((query.contains("@c"))
+                                        && ((entry instanceof JKECategoryEntry
+                                        && ((JKECategoryEntry) entry).labelText.toLowerCase(Locale.ROOT)
+                                        .contains(allParametersStrippedQuery))
+                                        || (entry instanceof JEKKeyEntry && I18n.get(((JEKKeyEntry) entry).key.getCategory())
+                                            .toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery))))
                                 //search by key
-                                ||((query.startsWith("@k ") || query.contains(" @k ")) && (entry instanceof JEKKeyEntry && !((JEKKeyEntry) entry).key.isUnbound() && (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getKey().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery) || (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getModifierKeyMap().search(allParametersStrippedQuery)))))
+                                ||((query.contains("@k"))
+                                        && (entry instanceof JEKKeyEntry
+                                        && !((JEKKeyEntry) entry).key.isUnbound()
+                                        && (Arrays.stream(((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key)
+                                            .jek$getKey().getDisplayName().getString().toLowerCase(Locale.ROOT).split(" "))
+                                            .anyMatch(substring->substring.startsWith(allParametersStrippedQuery))
+                                            || (((IJEKKeyMappingExtensions)((JEKKeyEntry) entry).key).jek$getModifierKeyMap().search(allParametersStrippedQuery))
+                                            || ((JEKKeyEntry) entry).key.getTranslatedKeyMessage().getString().toLowerCase(Locale.ROOT).startsWith(allParametersStrippedQuery)
+                                        )))
+                        ))).sorted((entry1,entry2)->{
+                            if(query.isEmpty()
+                                    || query.contains("@c")
+                                    || query.contains("^u")
+                                    || !(query.contains("@k") || query.contains("^c"))) {
+                                return 0;
+                            }
 
-                        ))).collect(Collectors.toList()));
+                            String entry1DisplayText = (((JEKKeyEntry)entry1).key).getTranslatedKeyMessage().getString().toLowerCase(Locale.ROOT);
+                            String entry2DisplayText = (((JEKKeyEntry)entry2).key).getTranslatedKeyMessage().getString().toLowerCase(Locale.ROOT);
+
+                            if(entry1DisplayText.length() != entry2DisplayText.length()) {
+                                return Integer.compare(entry1DisplayText.length(), entry2DisplayText.length());
+                            }
+                            return entry1DisplayText.compareTo(entry2DisplayText);
+
+                        }).collect(Collectors.toList()));
     }
 
     public class JKECategoryEntry extends ControlList.Entry {

@@ -83,6 +83,23 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "getTranslatedKeyMessage", at=@At("HEAD"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
+        TextComponent displayText = getModifiersText();
+        displayText.append(getKeyText());
+        cir.setReturnValue(displayText);
+    }
+
+    private TextComponent getKeyText() {
+        TextComponent displayText= new TextComponent("");
+        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            if(this.jek$getModifierKeyMap().any()){
+                displayText.append(new TextComponent("+"));
+            }
+            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        }
+        return displayText;
+    }
+
+    private TextComponent getModifiersText() {
         TextComponent displayText = new TextComponent("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
@@ -94,17 +111,9 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
                displayText.append(new TextComponent("+"));
            }
         }
-        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
-
-        });
-        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            if(keyIndexes.length>0){
-                displayText.append(new TextComponent("+"));
-            }
-            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
-        }
-        cir.setReturnValue(displayText);
+        return displayText;
     }
+
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
         if(!modifierKeyMap.isPressed()){

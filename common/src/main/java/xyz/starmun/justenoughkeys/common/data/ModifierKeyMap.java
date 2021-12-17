@@ -5,6 +5,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,6 +69,10 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
     }
 
     public boolean search(String allParametersStrippedQuery) {
-        return this.values().stream().anyMatch(modifierKey -> modifierKey.getDisplayName().toLowerCase(Locale.ROOT).contains(allParametersStrippedQuery));
+        return this.values().stream()
+                .anyMatch(modifierKey -> modifierKey.getDisplayName().toLowerCase(Locale.ROOT)
+                        .startsWith(allParametersStrippedQuery)
+                        || Arrays.stream(modifierKey.getDisplayName().toLowerCase(Locale.ROOT)
+                        .split(" ")).anyMatch(substring->substring.startsWith(allParametersStrippedQuery)));
     }
 }
