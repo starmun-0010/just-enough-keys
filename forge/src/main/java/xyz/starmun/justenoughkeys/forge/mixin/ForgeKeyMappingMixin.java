@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(KeyMapping.class)
-public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybinding {
+public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybinding, IJEKKeyMappingExtensions {
 
     @Shadow private InputConstants.Key key;
     @Shadow
@@ -30,10 +30,9 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
 
     @Inject(method = "<init>(Ljava/lang/String;Lnet/minecraftforge/client/settings/IKeyConflictContext;Lnet/minecraftforge/client/settings/KeyModifier;Lcom/mojang/blaze3d/platform/InputConstants$Key;Ljava/lang/String;)V", at = @At("TAIL"))
     public void fillMap(String description, IKeyConflictContext keyConflictContext, KeyModifier keyModifier, InputConstants.Key keyCode, String category, CallbackInfo ci) {
-        ((IJEKKeyMappingExtensions)this).setDefaultModifierKeyMap(getModifierKeyMapFromForgeKeyModifier(keyModifier));
-        ((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap().set(getModifierKeyMapFromForgeKeyModifier(keyModifier));
-        IJEKKeyMappingExtensions.ALL.put(this.name, (KeyMapping) (Comparable<KeyMapping>) this);
-        IJEKKeyMappingExtensions.initMAP((KeyMapping) (Comparable<KeyMapping>) this);
+        this.setDefaultModifierKeyMap(getModifierKeyMapFromForgeKeyModifier(keyModifier));
+        this.jek$getModifierKeyMap().set(getModifierKeyMapFromForgeKeyModifier(keyModifier));
+
     }
 
     @Override
