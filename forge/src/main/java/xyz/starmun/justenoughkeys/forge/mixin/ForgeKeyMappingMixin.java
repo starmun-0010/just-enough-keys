@@ -40,13 +40,13 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return keyCode != InputConstants.UNKNOWN
                 && keyCode.equals(getKey())
                 && getKeyConflictContext().isActive()
-                && ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().isPressed();
+                && this.jek$getModifierKeyMap().isPressed();
     }
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
     public void same(KeyMapping keyMapping, CallbackInfoReturnable<Boolean> cir){
         if((this.getKeyConflictContext().conflicts(keyMapping.getKeyConflictContext())||keyMapping.getKeyConflictContext().conflicts(this.getKeyConflictContext()))
-                && ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap())
+                && ((IJEKKeyMappingExtensions)keyMapping).jek$getModifierKeyMap().equals(this.jek$getModifierKeyMap())
                 && this.key.equals(keyMapping.getKey())) {
             cir.setReturnValue(true);
             return;
@@ -58,15 +58,15 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return 0;
     }
 
-    @Inject(method = "isDefault", at=@At("HEAD"),cancellable = true)
-    public void isDefault(CallbackInfoReturnable<Boolean> cir){
-        ModifierKeyMap modifierKeyMap =((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap();
-        ModifierKeyMap defaultModifierKeyMap = ((IJEKKeyMappingExtensions)this).jek$getDefaultModifierKeyMap();
-        if( modifierKeyMap.size() != defaultModifierKeyMap.size()
-                || !modifierKeyMap.equals(defaultModifierKeyMap)){
-            cir.setReturnValue(false);
-        }
-    }
+//    @Inject(method = "isDefault", at=@At("HEAD"),cancellable = true)
+//    public void isDefault(CallbackInfoReturnable<Boolean> cir){
+//        ModifierKeyMap modifierKeyMap =((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap();
+//        ModifierKeyMap defaultModifierKeyMap = ((IJEKKeyMappingExtensions)this).jek$getDefaultModifierKeyMap();
+//        if( modifierKeyMap.size() != defaultModifierKeyMap.size()
+//                || !modifierKeyMap.equals(defaultModifierKeyMap)){
+//            cir.setReturnValue(false);
+//        }
+//    }
 
     private final Map<KeyModifier,ModifierKey> forgeKeyModifierToJEKKEYModifierLookupTable = new HashMap<KeyModifier,ModifierKey>() {{
         put(KeyModifier.ALT, ModifierKey.KEYBOARD_LEFT_ALT);
@@ -79,35 +79,5 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
        return new ModifierKeyMap(){{
            set(forgeKeyModifierToJEKKEYModifierLookupTable.get(keyModifier),true);
        }};
-    }
-    @SuppressWarnings({"NullableProblems", "ConstantConditions"})
-    @Shadow
-    public InputConstants.Key getKey() {
-        return null;
-    }
-
-
-    @Shadow
-    public void setKeyConflictContext(IKeyConflictContext iKeyConflictContext) {
-
-    }
-
-    @Shadow
-    public IKeyConflictContext getKeyConflictContext() {
-        return null;
-    }
-
-    @Shadow
-    public KeyModifier getKeyModifierDefault() {
-        return null;
-    }
-
-    @Shadow
-    public KeyModifier getKeyModifier() {
-        return null;
-    }
-
-    @Shadow
-    public void setKeyModifierAndCode(KeyModifier keyModifier, InputConstants.Key arg) {
     }
 }

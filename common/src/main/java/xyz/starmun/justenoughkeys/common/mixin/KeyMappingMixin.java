@@ -126,12 +126,14 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
        }
     }
 
-    @PlatformOnly(PlatformOnly.FABRIC)
     @Inject(method = "isDefault", at=@At("TAIL"),cancellable = true)
     public void isDefault(CallbackInfoReturnable<Boolean> cir){
-       if(modifierKeyMap.any()){
-           cir.setReturnValue(false);
-       }
+        ModifierKeyMap modifierKeyMap =((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap();
+        ModifierKeyMap defaultModifierKeyMap = ((IJEKKeyMappingExtensions)this).jek$getDefaultModifierKeyMap();
+        if( modifierKeyMap.size() != defaultModifierKeyMap.size()
+                || !modifierKeyMap.equals(defaultModifierKeyMap)){
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(method = "setAll", at = @At("HEAD"), cancellable = true)
