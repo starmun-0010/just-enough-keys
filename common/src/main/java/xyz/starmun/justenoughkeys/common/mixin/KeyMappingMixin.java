@@ -63,6 +63,10 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
+        if(ModifierKey.isModifierKey(this.jek$getKey())){
+            this.jek$getModifierKeyMap().set(this.jek$getKey());
+            this.defaultModifierKeyMap.set(this.jek$getKey());
+        }
         IJEKKeyMappingExtensions.ALL.put(this.name,(KeyMapping)(Comparable<KeyMapping>)this);
         IJEKKeyMappingExtensions.initMAP((KeyMapping)(Comparable<KeyMapping>)this);
     }
@@ -79,6 +83,23 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "getTranslatedKeyMessage", at=@At("HEAD"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
+        TextComponent displayText = getModifiersText();
+        displayText.append(getKeyText());
+        cir.setReturnValue(displayText);
+    }
+
+    private TextComponent getKeyText() {
+        TextComponent displayText= new TextComponent("");
+        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            if(this.jek$getModifierKeyMap().any()){
+                displayText.append(new TextComponent("+"));
+            }
+            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+        }
+        return displayText;
+    }
+
+    private TextComponent getModifiersText() {
         TextComponent displayText = new TextComponent("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
@@ -90,17 +111,9 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
                displayText.append(new TextComponent("+"));
            }
         }
-        this.jek$getModifierKeyMap().forEach((id, modifierKey) ->{
-
-        });
-        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            if(keyIndexes.length>0){
-                displayText.append(new TextComponent("+"));
-            }
-            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
-        }
-        cir.setReturnValue(displayText);
+        return displayText;
     }
+
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
         if(!modifierKeyMap.isPressed()){
@@ -121,12 +134,15 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
           cir.setReturnValue(false);
        }
     }
-    @PlatformOnly(PlatformOnly.FABRIC)
+
     @Inject(method = "isDefault", at=@At("TAIL"),cancellable = true)
     public void isDefault(CallbackInfoReturnable<Boolean> cir){
-       if(modifierKeyMap.any()){
-           cir.setReturnValue(false);
-       }
+        ModifierKeyMap modifierKeyMap =((IJEKKeyMappingExtensions)this).jek$getModifierKeyMap();
+        ModifierKeyMap defaultModifierKeyMap = ((IJEKKeyMappingExtensions)this).jek$getDefaultModifierKeyMap();
+        if( modifierKeyMap.size() != defaultModifierKeyMap.size()
+                || !modifierKeyMap.equals(defaultModifierKeyMap)){
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(method = "setAll", at = @At("HEAD"), cancellable = true)
