@@ -30,6 +30,8 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
 
     @Inject(method = "<init>(Ljava/lang/String;Lnet/minecraftforge/client/settings/IKeyConflictContext;Lnet/minecraftforge/client/settings/KeyModifier;Lcom/mojang/blaze3d/platform/InputConstants$Key;Ljava/lang/String;)V", at = @At("TAIL"))
     public void fillMap(String description, IKeyConflictContext keyConflictContext, KeyModifier keyModifier, InputConstants.Key keyCode, String category, CallbackInfo ci) {
+        IJEKKeyMappingExtensions.ALL.put(this.name,(KeyMapping)(Comparable<KeyMapping>)this);
+        IJEKKeyMappingExtensions.initMAP((KeyMapping)(Comparable<KeyMapping>)this);
         this.setDefaultModifierKeyMap(getModifierKeyMapFromForgeKeyModifier(keyModifier));
         this.jek$getModifierKeyMap().set(getModifierKeyMapFromForgeKeyModifier(keyModifier));
 
