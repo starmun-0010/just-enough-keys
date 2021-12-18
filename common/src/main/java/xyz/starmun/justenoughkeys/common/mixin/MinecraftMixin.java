@@ -16,15 +16,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
+import xyz.starmun.justenoughkeys.common.client.JEKControls;
 import xyz.starmun.justenoughkeys.common.gui.JEKControlScreen;
 
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class)
 public class MinecraftMixin {
-
-    @Shadow @Nullable public LocalPlayer player;
-
-    @Shadow @Final public Options options;
 
     @ModifyVariable(method = "setScreen", at=@At("HEAD"), argsOnly = true)
     public Screen setScreen(Screen screen){
@@ -36,25 +32,5 @@ public class MinecraftMixin {
             e.printStackTrace();
         }
         return screen;
-    }
-    //Disable vanilla drop held item behaviour
-    @Redirect(method = "handleKeybinds", at=@At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
-    public boolean consumeDropClick(KeyMapping instance){
-        return false;
-    }
-    @Inject(method = "handleKeybinds", at=@At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
-    public void handleDropKeys(CallbackInfo ci){
-        while(this.options.keyDrop.consumeClick()) {// 1675
-            assert this.player != null;
-            if (!this.player.isSpectator() && this.player.drop(false)) {// 1676 1677
-                this.player.swing(InteractionHand.MAIN_HAND);// 1678
-            }
-        }
-        while (JustEnoughKeys.dropStack.consumeClick()){
-            assert this.player != null;
-            if (!this.player.isSpectator() && this.player.drop(true)) {// 1676 1677
-                this.player.swing(InteractionHand.MAIN_HAND);// 1678
-            }
-        }
     }
 }
