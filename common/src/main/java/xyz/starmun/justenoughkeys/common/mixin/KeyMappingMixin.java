@@ -63,10 +63,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
-        if(ModifierKey.isModifierKey(this.jek$getKey())){
-            this.jek$getModifierKeyMap().set(this.jek$getKey());
-            this.defaultModifierKeyMap.set(this.jek$getKey());
-        }
         IJEKKeyMappingExtensions.ALL.put(this.name,(KeyMapping)(Comparable<KeyMapping>)this);
         IJEKKeyMappingExtensions.initMAP((KeyMapping)(Comparable<KeyMapping>)this);
     }
@@ -90,10 +86,12 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     private TextComponent getKeyText() {
         TextComponent displayText= new TextComponent("");
-        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            if(this.jek$getModifierKeyMap().any()){
-                displayText.append(new TextComponent("+"));
-            }
+        if(this.jek$getModifierKeyMap().any()
+                && !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            displayText.append(new TextComponent("+"));
+        }
+        if(!this.jek$getModifierKeyMap().any()
+                || !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
             displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
         }
         return displayText;

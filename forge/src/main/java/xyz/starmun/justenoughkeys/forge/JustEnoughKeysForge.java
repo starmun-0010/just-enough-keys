@@ -9,8 +9,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(JustEnoughKeys.MOD_ID)
 public class JustEnoughKeysForge {
     public JustEnoughKeysForge() {
-        ClientRegistry.registerKeyBinding(JustEnoughKeys.dropStack);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "", (a, b) -> true));
+        ClientRegistry.registerKeyBinding(JustEnoughKeys.dropStack);
         JustEnoughKeys.init();
     }
 }

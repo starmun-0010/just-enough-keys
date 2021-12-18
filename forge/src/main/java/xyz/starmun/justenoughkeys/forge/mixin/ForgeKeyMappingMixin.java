@@ -60,7 +60,6 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
         return 0;
     }
 
-
     private final Map<KeyModifier,ModifierKey> forgeKeyModifierToJEKKEYModifierLookupTable = new HashMap<KeyModifier,ModifierKey>() {{
         put(KeyModifier.ALT, ModifierKey.KEYBOARD_LEFT_ALT);
         put(KeyModifier.SHIFT, ModifierKey.KEYBOARD_LEFT_SHIFT);

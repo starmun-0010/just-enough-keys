@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
+import xyz.starmun.justenoughkeys.common.client.JEKControls;
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class AbstractContainerScreenMixin {
@@ -27,7 +27,7 @@ public abstract class AbstractContainerScreenMixin {
                 this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 0, ClickType.THROW);// 581
                 cir.setReturnValue(true);
             }
-            else if(JustEnoughKeys.dropStack.matches(i,j)){
+            else if(JEKControls.dropStack.matches(i,j)){
                 this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 1 , ClickType.THROW);// 581
                 cir.setReturnValue(true);
             }

@@ -10,6 +10,7 @@
     "ControlsScreenMixin",
     "OptionsMixin",
     "MinecraftMixin",
+    "CustomDropKeysMixin",
     "ScreenMixin",
     "KeyboardHandlerMixin",
     "AbstractContainerScreenMixin"
@@ -17,5 +18,6 @@
   "injectors": {
     "defaultRequire": 1
   },
+  "plugin": "xyz.starmun.justenoughkeys.common.mixin.config.MixinConfigPlugin",
   "minVersion": "0.8"
 }
