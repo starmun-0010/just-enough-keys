@@ -114,8 +114,14 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
-        if(!modifierKeyMap.isPressed()){
-                cir.setReturnValue(false);
+        // when a modifier key is pressed on the keyboard
+        // if no keymapping with the pressed modifiers is currently triggered
+        // Let any matching keymapping, which has no modifier, pass through
+        if((!modifierKeyMap.any()
+                && !IJEKKeyMappingExtensions
+                .getMatchingKeyMappingsWithModifiers(InputConstants.getKey(i,j)).isEmpty())
+                || (modifierKeyMap.any() && !modifierKeyMap.isPressed())){
+            cir.setReturnValue(false);
         }
     }
 

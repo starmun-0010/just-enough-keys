@@ -83,4 +83,9 @@ public interface IJEKKeyMappingExtensions {
             return keyMappings.stream();
         }
     }
+    static Set<KeyMapping> getMatchingKeyMappingsWithModifiers(InputConstants.Key key) {
+        Queue<KeyMapping> candidateKeys = MAP.get(key);
+        if (candidateKeys == null) return new HashSet<>();
+        return candidateKeys.stream().filter(keyMapping ->((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().any() && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+    }
 }
