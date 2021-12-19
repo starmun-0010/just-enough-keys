@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+
     modRuntime "curse.maven:jei-238222:3564653"
     modRuntime "curse.maven:sophisticated-backpacks-422301:3476261"
     modRuntime "curse.maven:journeymap-32274:3509575"

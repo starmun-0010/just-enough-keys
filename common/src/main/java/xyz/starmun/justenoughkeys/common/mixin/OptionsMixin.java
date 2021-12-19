@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import xyz.starmun.justenoughkeys.common.data.ModifierKey;
+import xyz.starmun.justenoughkeys.common.data.ModifierKeyMap;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -57,12 +58,14 @@ public class OptionsMixin {
                         Iterator<String> lineIterator = OPTION_SPLITTER.split(line).iterator();
                         KeyMapping keyMapping = IJEKKeyMappingExtensions.ALL.get(lineIterator.next().replaceFirst("modifiers.", "").trim());
                         Iterator<String> valueIterator = VALUE_SPLITTER.split(lineIterator.next()).iterator();
+                        ModifierKeyMap modifierKeyMapOfCurrentKeyParse = new ModifierKeyMap();
                         valueIterator.forEachRemaining(keyValue -> {
-                            if (keyValue.trim().length() > 0 && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap()
+                            if (keyValue.trim().length() > 0 && modifierKeyMapOfCurrentKeyParse
                                     .set(InputConstants.getKey(keyValue.trim())) == ModifierKey.UNKNOWN) {
                                 JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
                             }
                         });
+                        ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(modifierKeyMapOfCurrentKeyParse);
                     } catch (Exception ex) {
                         JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
                     }

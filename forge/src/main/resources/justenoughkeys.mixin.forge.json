@@ -9,5 +9,6 @@
   "client": [
     "ForgeKeyMappingMixin",
     "AbstractContainerScreenMixin"
-  ]
+  ],
+  "plugin": "xyz.starmun.justenoughkeys.common.mixin.config.MixinConfigPlugin"
 }

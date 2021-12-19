@@ -217,7 +217,6 @@ public class JEKControlList extends ControlList {
             this.resetButton = new Button(0, 0, 50, 20, new TranslatableComponent("controls.reset"), (button) -> {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
-                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).jek$getDefaultModifierKeyMap());
 
             }) {

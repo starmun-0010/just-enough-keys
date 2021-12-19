@@ -10,5 +10,6 @@ public class JEKKeyMapping extends KeyMapping {
     public JEKKeyMapping(String name, ModifierKeyMap modifierKeyMap, InputConstants.Type type, int keyCode, String category) {
         super(name, type, keyCode, category);
         ((IJEKKeyMappingExtensions) this).setDefaultModifierKeyMap(modifierKeyMap);
+        ((IJEKKeyMappingExtensions) this).jek$getModifierKeyMap().set(modifierKeyMap);
     }
 }

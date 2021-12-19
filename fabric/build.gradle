@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
@@ -20,6 +21,7 @@ dependencies {
     modRuntime "curse.maven:auto-config-updated-api-373261:3095961"
     modRuntime "curse.maven:dont-drop-it-390383:3455670"
     modRuntime "curse.maven:cloth-config-319057:3559636"
+    //modRuntime "curse.maven:interactic-510974:3490244"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false

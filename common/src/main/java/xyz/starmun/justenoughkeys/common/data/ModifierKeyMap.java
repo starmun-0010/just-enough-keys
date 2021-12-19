@@ -15,6 +15,7 @@ public class ModifierKeyMap extends HashMap<Integer, ModifierKey> {
     private final BitSet bitSet = new BitSet();
 
     public void set(ModifierKeyMap modifierKeyMap){
+        this.clear();
         modifierKeyMap.forEach((integer, modifierKey) -> {
             if(modifierKey== ModifierKey.UNKNOWN){
                 return;
