@@ -1,3 +1,14 @@
+## JEK 0.5.1 to 0.5.2
+- Added/Fixed Compatibility for mods:
+  1. Don't Drop It
+  2. Interactic
+  3. ItemPhysic
+- Fixed modifier only vanilla keys resetting on restart
+- Fixed forge keys with default modifiers resetting on restart
+- Updated keybinding to let keys with no modifier pass through
+  when a modifier key is pressed, but no keymapping with the modifier
+  is triggered.
+  
 ## JEK 0.4.3 to 0.5.1
 
 - Implemented separate drop stack key from drop item
