@@ -3,7 +3,7 @@ package xyz.starmun.justenoughkeys.common.mixin.config;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import xyz.starmun.justenoughkeys.platform.Mods;
+import xyz.starmun.justenoughkeys.common.client.Config;
 
 import java.util.List;
 import java.util.Set;
@@ -21,12 +21,10 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return !(
-                mixinClassName.equals("xyz.starmun.justenoughkeys.common.mixin.CustomDropKeysMixin")
-                &&
-                    (Mods.isLoaded("dontdropit")
-                    || Mods.isLoaded("interactic"))
-                );
+        return !((mixinClassName.equals("xyz.starmun.justenoughkeys.common.mixin.CustomDropKeysMixin")
+                || mixinClassName.equals("xyz.starmun.justenoughkeys.common.mixin.AbstractContainerScreenMixin"))
+                && !Config.isCustomDropKeyFeatureEnabled()
+        );
     }
 
     @Override

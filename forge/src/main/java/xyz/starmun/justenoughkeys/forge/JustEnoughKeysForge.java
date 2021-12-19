@@ -8,12 +8,15 @@ import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
 import xyz.starmun.justenoughkeys.common.client.JEKControls;
+import xyz.starmun.justenoughkeys.common.client.Config;
 
 @Mod(JustEnoughKeys.MOD_ID)
 public class JustEnoughKeysForge {
     public JustEnoughKeysForge() {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
-        ClientRegistry.registerKeyBinding(JEKControls.dropStack);
+        if(Config.isCustomDropKeyFeatureEnabled()){
+            ClientRegistry.registerKeyBinding(JEKControls.dropStack);
+        }
         JustEnoughKeys.init();
     }
 }
