@@ -39,10 +39,16 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
 
     @Override
     public boolean isActiveAndMatches(InputConstants.Key keyCode) {
+
         return keyCode != InputConstants.UNKNOWN
                 && keyCode.equals(getKey())
                 && getKeyConflictContext().isActive()
-                && this.jek$getModifierKeyMap().isPressed();
+                && ((this.jek$getModifierKeyMap().any()
+                    && this.jek$getModifierKeyMap().isPressed())
+                || (!this.jek$getModifierKeyMap().any()
+                    && IJEKKeyMappingExtensions
+                        .getMatchingKeyMappingsWithModifiers(key).isEmpty())
+                    );
     }
 
     @Inject(method = "same", at=@At("HEAD"), cancellable = true)
@@ -59,7 +65,6 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
     public int compareTo(@NotNull KeyMapping o) {
         return 0;
     }
-
 
     private final Map<KeyModifier,ModifierKey> forgeKeyModifierToJEKKEYModifierLookupTable = new HashMap<KeyModifier,ModifierKey>() {{
         put(KeyModifier.ALT, ModifierKey.KEYBOARD_LEFT_ALT);

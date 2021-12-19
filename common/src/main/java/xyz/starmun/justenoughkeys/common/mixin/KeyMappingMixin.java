@@ -63,10 +63,6 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at=@At("TAIL"))
     public void fillMap(String string, InputConstants.Type type, int i, String string2, CallbackInfo ci){
-        if(ModifierKey.isModifierKey(this.jek$getKey())){
-            this.jek$getModifierKeyMap().set(this.jek$getKey());
-            this.defaultModifierKeyMap.set(this.jek$getKey());
-        }
         IJEKKeyMappingExtensions.ALL.put(this.name,(KeyMapping)(Comparable<KeyMapping>)this);
         IJEKKeyMappingExtensions.initMAP((KeyMapping)(Comparable<KeyMapping>)this);
     }
@@ -90,10 +86,12 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     private TextComponent getKeyText() {
         TextComponent displayText= new TextComponent("");
-        if(!ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            if(this.jek$getModifierKeyMap().any()){
-                displayText.append(new TextComponent("+"));
-            }
+        if(this.jek$getModifierKeyMap().any()
+                && !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
+            displayText.append(new TextComponent("+"));
+        }
+        if(!this.jek$getModifierKeyMap().any()
+                || !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
             displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
         }
         return displayText;
@@ -116,8 +114,14 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
 
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)
     public void matches(int i, int j, CallbackInfoReturnable<Boolean> cir) {
-        if(!modifierKeyMap.isPressed()){
-                cir.setReturnValue(false);
+        // when a modifier key is pressed on the keyboard
+        // if no keymapping with the pressed modifiers is currently triggered
+        // Let any matching keymapping, which has no modifier, pass through
+        if((!modifierKeyMap.any()
+                && !IJEKKeyMappingExtensions
+                .getMatchingKeyMappingsWithModifiers(InputConstants.getKey(i,j)).isEmpty())
+                || (modifierKeyMap.any() && !modifierKeyMap.isPressed())){
+            cir.setReturnValue(false);
         }
     }
 

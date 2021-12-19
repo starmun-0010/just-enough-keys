@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.starmun.justenoughkeys.common.JustEnoughKeys;
+import xyz.starmun.justenoughkeys.common.client.JEKControls;
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class AbstractContainerScreenMixin {
@@ -23,12 +23,12 @@ public abstract class AbstractContainerScreenMixin {
     @Inject(method = "keyPressed", at = @At("TAIL"), cancellable = true)
     public void keyPressed(int i, int j, int k, CallbackInfoReturnable<Boolean> cir){
         if(this.hoveredSlot != null && this.hoveredSlot.hasItem()){
-            if(Minecraft.getInstance().options.keyDrop.matches(i,j)) {// 580
-                this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 0, ClickType.THROW);// 581
+            if(JEKControls.dropStack.matches(i,j)){
+                this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 1 , ClickType.THROW);// 581
                 cir.setReturnValue(true);
             }
-            else if(JustEnoughKeys.dropStack.matches(i,j)){
-                this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 1 , ClickType.THROW);// 581
+            if(Minecraft.getInstance().options.keyDrop.matches(i,j)) {// 580
+                this.slotClicked(this.hoveredSlot, this.hoveredSlot.index, 0, ClickType.THROW);// 581
                 cir.setReturnValue(true);
             }
         }

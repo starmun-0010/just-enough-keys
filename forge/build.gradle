@@ -103,6 +103,8 @@ if(System.getenv('CURSE_DEPLOY')) {
             releaseType = "${release_type}"
             addGameVersion "Forge"
             addGameVersion "${minecraft_version}"
+            addGameVersion "1.18"
+            addGameVersion "Java 18"
             addGameVersion "${java_version}"
             mainArtifact(remapJar){
                 displayName = "${archivesBaseName}-forge-${minecraft_version}-${mod_version}"
