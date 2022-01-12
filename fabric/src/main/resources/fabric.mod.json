@@ -17,7 +17,8 @@
   "entrypoints": {
     "main": [
       "xyz.starmun.justenoughkeys.fabric.JustEnoughKeysFabric"
-    ]
+    ],
+    "client": ["xyz.starmun.justenoughkeys.fabric.JustEnoughKeysClientFabric"]
   },
   "mixins": ["justenoughkeys.mixins.json","justenoughkeys.mixins.fabric.json"],
   "depends": {

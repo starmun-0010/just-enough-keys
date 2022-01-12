@@ -1,3 +1,6 @@
+## JEK 0.5.1 to 0.5.3
+- Fixed crash when launching dedicated server.
+
 ## JEK 0.5.1 to 0.5.2
 - Added/Fixed Compatibility for mods:
   1. Don't Drop It
