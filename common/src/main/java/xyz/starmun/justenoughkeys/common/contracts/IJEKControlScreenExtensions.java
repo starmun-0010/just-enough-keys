@@ -1,8 +1,8 @@
 package xyz.starmun.justenoughkeys.common.contracts;
 
-import net.minecraft.client.gui.screens.controls.ControlList;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
 
 public interface IJEKControlScreenExtensions {
-    ControlList jek$getControlList();
-    void jek$setControlList(ControlList controlsList);
+    KeyBindsList jek$getControlList();
+    void jek$setControlList(KeyBindsList controlsList);
 }

@@ -1,6 +1,6 @@
 package xyz.starmun.justenoughkeys.platform;
 
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 
 public class Mods {
     @ExpectPlatform()

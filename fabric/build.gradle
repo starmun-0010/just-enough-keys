@@ -1,5 +1,6 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
 configurations {
@@ -10,15 +11,23 @@ architectury {
     platformSetupLoomIde()
     fabric()
 }
+repositories {
+    maven { url "https://maven.siphalor.de/" }
+}
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
-    implementation(project(path: ":common")) {
+    modRuntime "curse.maven:auto-config-updated-api-373261:3095961"
+    modRuntime "curse.maven:dont-drop-it-390383:3554849"
+    modRuntime "curse.maven:cloth-config-319057:3546620"
+    //modRuntime "curse.maven:interactic-510974:3545805"
+
+    implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
-    developmentFabric(project(path: ":common")) {
+    developmentFabric(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
@@ -48,10 +57,6 @@ remapJar {
 
 jar {
     classifier "dev"
-}
-
-java {
-    withSourcesJar()
 }
 
 sourcesJar {
@@ -92,6 +97,8 @@ if(System.getenv('CURSE_DEPLOY')) {
             addGameVersion "Fabric"
             addGameVersion "${minecraft_version}"
             addGameVersion "${java_version}"
+            addGameVersion "1.18"
+            addGameVersion "Java 18"
             mainArtifact(remapJar){
 
                 displayName = "${archivesBaseName}-fabric-${minecraft_version}-${mod_version}"

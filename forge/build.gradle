@@ -1,6 +1,6 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
 configurations {
@@ -11,30 +11,29 @@ architectury {
     platformSetupLoomIde()
     forge()
 }
+loom{
+    forge{
+        mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
+    }
+}
 
-loom {
-    mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
-    launches {
-        client {
-            property "fabric.log.level", "debug"
-        }
-        server {
-            property "fabric.log.level", "debug"
-        }
+repositories {
+
+    maven {
+        url "https://www.cursemaven.com"
     }
 }
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+    modRuntime "curse.maven:jei-238222:3566128"
+    modRuntime "curse.maven:sophisticated-backpacks-422301:3555237"
+    modRuntime "curse.maven:journeymap-32274:3556454"
 
-    modRuntime "curse.maven:jei-238222:3345971"
-    modRuntime "curse.maven:sophisticated-backpacks-422301:3555233"
-    modRuntime "curse.maven:journeymap-32274:3397059"
-
-    implementation(project(path: ":common")) {
+    implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
-    developmentForge(project(path: ":common")) {
+    developmentForge(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
@@ -65,10 +64,6 @@ remapJar {
 
 jar {
     classifier "dev"
-}
-
-java {
-    withSourcesJar()
 }
 
 sourcesJar {
@@ -108,6 +103,8 @@ if(System.getenv('CURSE_DEPLOY')) {
             releaseType = "${release_type}"
             addGameVersion "Forge"
             addGameVersion "${minecraft_version}"
+            addGameVersion "1.18"
+            addGameVersion "Java 18"
             addGameVersion "${java_version}"
             mainArtifact(remapJar){
                 displayName = "${archivesBaseName}-forge-${minecraft_version}-${mod_version}"

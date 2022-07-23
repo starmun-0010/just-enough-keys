@@ -8,8 +8,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
@@ -21,12 +24,12 @@ import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JEKControlList extends ControlList {
-    private final ControlsScreen controlsScreen;
+public class JEKControlList extends KeyBindsList {
+    private final KeyBindsScreen controlsScreen;
     private int maxListLabelWidth;
     private List<Entry> keyEntries = new ArrayList<>();
 
-    public JEKControlList(ControlsScreen controlsScreen, Minecraft minecraft) {
+    public JEKControlList(KeyBindsScreen controlsScreen, Minecraft minecraft) {
 
         super(controlsScreen, minecraft);
         this.width = controlsScreen.width + 45;
@@ -47,13 +50,14 @@ public class JEKControlList extends ControlList {
             return;
         }
         JEKKeyEntry keyEntry = (JEKKeyEntry) entry;
-        controlsScreen.renderTooltip( poseStack,new TranslatableComponent(keyEntry.getCategory()),mouseX,mouseY);
+        controlsScreen.renderTooltip(poseStack,new TranslatableComponent(keyEntry.getCategory()),mouseX,mouseY);
     }
 
     public Entry getJEKKeyEntryAtPos(double mouseY) {
         if(mouseY <=  y0 || mouseY >= y1) {
             return null;
         }
+
         int relativeCursorPosition = Mth.floor(mouseY - (double) this.y0) - this.headerHeight + (int) this.getScrollAmount() - 4;
         int keyEntryIndex = relativeCursorPosition / this.itemHeight;
         return relativeCursorPosition >= 0 && keyEntryIndex < this.getItemCount() ? this.children().get(keyEntryIndex) : null;
@@ -151,7 +155,7 @@ public class JEKControlList extends ControlList {
                         }).collect(Collectors.toList()));
     }
 
-    public class JKECategoryEntry extends ControlList.Entry {
+    public class JKECategoryEntry extends KeyBindsList.Entry {
         private final String labelText;
         private final int labelWidth;
         private final String name;
@@ -175,9 +179,22 @@ public class JEKControlList extends ControlList {
             assert JEKControlList.this.minecraft.screen != null;
             JEKControlList.this.minecraft.font.draw(stack, this.labelText, (float) (JEKControlList.this.minecraft.screen.width / 2 - this.labelWidth / 2), (float) (y + rowWidth - 9 - 1), 16777215);
         }
+
+        @Override
+        public List<? extends NarratableEntry> narratables() {
+            return ImmutableList.of(new NarratableEntry() {// 81
+                public NarrationPriority narrationPriority() {
+                    return NarrationPriority.HOVERED;// 84
+                }
+
+                public void updateNarration(NarrationElementOutput narrationElementOutput) {
+                    narrationElementOutput.add(NarratedElementType.TITLE, JKECategoryEntry.this.name);// 89
+                }// 90
+            });
+        }
     }
 
-    public class JEKKeyEntry extends ControlList.Entry {
+    public class JEKKeyEntry extends KeyBindsList.Entry {
 
         private final KeyMapping key;
         private final Button changeButton;
@@ -210,6 +227,7 @@ public class JEKControlList extends ControlList {
                 }
             };
         }
+
         public String getCategory(){
             return this.key.getCategory();
         }
@@ -256,6 +274,11 @@ public class JEKControlList extends ControlList {
             if (super.mouseClicked(d, e, i)) return true;
             if (changeButton.mouseClicked(d, e, i)) return true;
             else return resetButton.mouseClicked(d, e, i);
+        }
+
+        @Override
+        public List<? extends NarratableEntry> narratables() {
+            return ImmutableList.of(this.changeButton, this.resetButton);// 166
         }
     }
 }

@@ -2,7 +2,7 @@ package xyz.starmun.justenoughkeys.forge.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.extensions.IForgeKeybinding;
+import net.minecraftforge.client.extensions.IForgeKeyMapping;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(KeyMapping.class)
-public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeybinding, IJEKKeyMappingExtensions {
+public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IForgeKeyMapping, IJEKKeyMappingExtensions {
 
     @Shadow private InputConstants.Key key;
     @Shadow

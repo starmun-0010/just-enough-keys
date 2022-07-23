@@ -4,9 +4,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,8 +25,9 @@ public class MinecraftMixin {
     @ModifyVariable(method = "setScreen", at=@At("HEAD"), argsOnly = true)
     public Screen setScreen(Screen screen){
         try {
-            if(screen instanceof ControlsScreen && !(screen instanceof JEKControlScreen)) {
-                return new JEKControlScreen(Minecraft.getInstance().screen, Minecraft.getInstance().options);
+            if(screen instanceof KeyBindsScreen && !(screen instanceof JEKControlScreen)) {
+                JEKControlScreen controlsScreen = new JEKControlScreen(Minecraft.getInstance().screen, Minecraft.getInstance().options);
+                return controlsScreen;
             }
         } catch(Exception e) {
             e.printStackTrace();

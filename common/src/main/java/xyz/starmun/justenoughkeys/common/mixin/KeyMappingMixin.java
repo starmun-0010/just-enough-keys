@@ -2,7 +2,7 @@ package xyz.starmun.justenoughkeys.common.mixin;
 
 import com.google.common.base.Splitter;
 import com.mojang.blaze3d.platform.InputConstants;
-import me.shedaniel.architectury.annotations.PlatformOnly;
+import dev.architectury.injectables.annotations.PlatformOnly;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;

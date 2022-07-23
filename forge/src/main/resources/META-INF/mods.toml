@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[35,)"
+loaderVersion = "[38,)"
 #issueTrackerURL = ""
 license = "Insert License Here"
 
@@ -16,13 +16,14 @@ Taking away your key conflicts.
 [[dependencies.justenoughkeys]]
 modId = "forge"
 mandatory = true
-versionRange = "[35,)"
+versionRange = "[38,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.justenoughkeys]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.2,)"
+versionRange = "[1.18,)"
 ordering = "NONE"
 side = "BOTH"
+
