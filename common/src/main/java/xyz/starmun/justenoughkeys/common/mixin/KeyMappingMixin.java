@@ -5,7 +5,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.injectables.annotations.PlatformOnly;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -79,37 +78,35 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "getTranslatedKeyMessage", at=@At("HEAD"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
-        TextComponent displayText = getModifiersText();
-        displayText.append(getKeyText());
-        cir.setReturnValue(displayText);
+        cir.setReturnValue(Component.literal(getModifiersText().getString() + getKeyText().getString()));
     }
 
-    private TextComponent getKeyText() {
-        TextComponent displayText= new TextComponent("");
+    private Component getKeyText() {
+        Component displayText= Component.empty();
         if(this.jek$getModifierKeyMap().any()
                 && !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            displayText.append(new TextComponent("+"));
+            displayText = Component.literal("+");
         }
         if(!this.jek$getModifierKeyMap().any()
                 || !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            displayText.append(((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName());
+            displayText = Component.literal(displayText.getString() + ((IJEKKeyMappingExtensions) this).jek$getKey().getDisplayName().getString());
         }
         return displayText;
     }
 
-    private TextComponent getModifiersText() {
-        TextComponent displayText = new TextComponent("");
+    private Component getModifiersText() {
+        final Component[] displayText = {Component.empty()};
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
         Integer[] keyIndexes = this.jek$getModifierKeyMap().keySet().toArray(new Integer[0]);
         for(int i = 0; i< keyIndexes.length; i++){
             Iterator<String> iterator = NAME_SPLITTER.split(ModifierKey.MODIFIER_KEYS.get(keyIndexes[i]).getDisplayName()).iterator();
-            iterator.forEachRemaining(string-> displayText.append(string.substring(0,1)));
+            iterator.forEachRemaining(string-> displayText[0] = Component.literal(displayText[0].getString() + string.charAt(0)));
            if(i!=keyIndexes.length-1){
-               displayText.append(new TextComponent("+"));
+               displayText[0] = Component.literal(displayText[0].getString() + "+");
            }
         }
-        return displayText;
+        return displayText[0];
     }
 
     @Inject(method = "matches", at=@At("HEAD"),cancellable = true)

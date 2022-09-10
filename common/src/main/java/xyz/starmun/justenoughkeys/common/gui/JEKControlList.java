@@ -14,9 +14,8 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.controls.KeyBindsList;
 import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.ArrayUtils;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKKeyMappingExtensions;
@@ -50,7 +49,7 @@ public class JEKControlList extends KeyBindsList {
             return;
         }
         JEKKeyEntry keyEntry = (JEKKeyEntry) entry;
-        controlsScreen.renderTooltip(poseStack,new TranslatableComponent(keyEntry.getCategory()),mouseX,mouseY);
+        controlsScreen.renderTooltip(poseStack, Component.translatable(keyEntry.getCategory()),mouseX,mouseY);
     }
 
     public Entry getJEKKeyEntryAtPos(double mouseY) {
@@ -205,17 +204,17 @@ public class JEKControlList extends KeyBindsList {
         private JEKKeyEntry(final KeyMapping keyMapping) {
             this.key = keyMapping;
             this.name = I18n.get(keyMapping.getName());
-            this.changeButton = new Button(0, 0, 100, 20, new TextComponent(name), (button) -> {
+            this.changeButton = new Button(0, 0, 100, 20, Component.literal(name), (button) -> {
                 JEKControlList.this.controlsScreen.selectedKey = keyMapping;
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
                 keyMapping.setKey(InputConstants.UNKNOWN);
             }) {
                 @Override
                 protected MutableComponent createNarrationMessage() {
-                    return keyMapping.isUnbound() ? new TranslatableComponent("narrator.controls.unbound", JEKKeyEntry.this.name) : new TranslatableComponent("narrator.controls.bound", JEKKeyEntry.this.name, super.createNarrationMessage());
+                    return keyMapping.isUnbound() ? Component.translatable("narrator.controls.unbound", JEKKeyEntry.this.name) : Component.translatable("narrator.controls.bound", JEKKeyEntry.this.name, super.createNarrationMessage());
                 }
             };
-            this.resetButton = new Button(0, 0, 50, 20, new TranslatableComponent("controls.reset"), (button) -> {
+            this.resetButton = new Button(0, 0, 50, 20, Component.translatable("controls.reset"), (button) -> {
                 JEKControlList.this.minecraft.options.setKey(keyMapping, keyMapping.getDefaultKey());
                 IJEKKeyMappingExtensions.resetMapping();
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(((IJEKKeyMappingExtensions)keyMapping).jek$getDefaultModifierKeyMap());
@@ -223,7 +222,7 @@ public class JEKControlList extends KeyBindsList {
             }) {
                 @Override
                 protected MutableComponent createNarrationMessage() {
-                    return new TranslatableComponent("narrator.controls.reset", JEKKeyEntry.this.name);
+                    return Component.translatable("narrator.controls.reset", JEKKeyEntry.this.name);
                 }
             };
         }
@@ -251,7 +250,7 @@ public class JEKControlList extends KeyBindsList {
             //If it is the selected key
             this.isConflicted = false;
             if (JEKControlList.this.controlsScreen.selectedKey == this.key) {
-                this.changeButton.setMessage((new TextComponent("> "))
+                this.changeButton.setMessage((Component.literal("> "))
                         .append(this.changeButton.getMessage().copy().withStyle(ChatFormatting.YELLOW))
                         .append(" <").withStyle(ChatFormatting.YELLOW));
             } else if (this.key.isUnbound()) {

@@ -1,7 +1,6 @@
 package xyz.starmun.justenoughkeys.forge;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,8 +19,9 @@ public class JustEnoughKeysForge {
     }
     @SubscribeEvent
     public static void registerClientEvent(FMLClientSetupEvent event){
-        if(Config.isCustomDropKeyFeatureEnabled()){
-            ClientRegistry.registerKeyBinding(JEKControls.dropStack);
-        }
+// Do I look like I care about Forge?  No, no I do not.
+//        if(Config.isCustomDropKeyFeatureEnabled()){
+//            ClientRegistry.registerKeyBinding(JEKControls.dropStack);
+//        }
     }
 }

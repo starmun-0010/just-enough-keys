@@ -13,16 +13,22 @@ architectury {
 }
 repositories {
     maven { url "https://maven.siphalor.de/" }
+    maven {
+        url = 'https://maven.minecraftforge.net/'
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
-    modRuntime "curse.maven:auto-config-updated-api-373261:3095961"
-    modRuntime "curse.maven:dont-drop-it-390383:3554849"
-    modRuntime "curse.maven:cloth-config-319057:3546620"
-    //modRuntime "curse.maven:interactic-510974:3545805"
+    include "curse.maven:auto-config-updated-api-373261:3095961"
+    include "curse.maven:dont-drop-it-390383:3554849"
+    include "curse.maven:cloth-config-319057:3546620"
+    //include "curse.maven:interactic-510974:3545805"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
@@ -33,8 +39,6 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
         transitive = false
     }
-}
-minecraft {
 }
 processResources {
     inputs.property "version", project.version
