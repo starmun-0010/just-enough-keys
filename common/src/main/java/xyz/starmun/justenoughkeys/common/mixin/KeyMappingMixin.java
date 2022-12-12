@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.injectables.annotations.PlatformOnly;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -79,16 +79,16 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
     }
     @Inject(method = "getTranslatedKeyMessage", at=@At("HEAD"),cancellable = true)
     public void getTranslatedKeyMessage(CallbackInfoReturnable<Component> cir) {
-        TextComponent displayText = getModifiersText();
+        MutableComponent displayText = getModifiersText();
         displayText.append(getKeyText());
         cir.setReturnValue(displayText);
     }
 
-    private TextComponent getKeyText() {
-        TextComponent displayText= new TextComponent("");
+    private MutableComponent getKeyText() {
+        MutableComponent displayText= Component.literal("");
         if(this.jek$getModifierKeyMap().any()
                 && !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
-            displayText.append(new TextComponent("+"));
+            displayText.append(Component.literal("+"));
         }
         if(!this.jek$getModifierKeyMap().any()
                 || !ModifierKey.isModifierKey(((IJEKKeyMappingExtensions) this).jek$getKey())){
@@ -97,8 +97,8 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
         return displayText;
     }
 
-    private TextComponent getModifiersText() {
-        TextComponent displayText = new TextComponent("");
+    private MutableComponent getModifiersText() {
+        MutableComponent displayText = Component.literal("");
         final Splitter NAME_SPLITTER = Splitter.on(' ');
 
         Integer[] keyIndexes = this.jek$getModifierKeyMap().keySet().toArray(new Integer[0]);
@@ -106,7 +106,7 @@ public class KeyMappingMixin  implements  Comparable<KeyMapping>, IJEKKeyMapping
             Iterator<String> iterator = NAME_SPLITTER.split(ModifierKey.MODIFIER_KEYS.get(keyIndexes[i]).getDisplayName()).iterator();
             iterator.forEachRemaining(string-> displayText.append(string.substring(0,1)));
            if(i!=keyIndexes.length-1){
-               displayText.append(new TextComponent("+"));
+               displayText.append(Component.literal("+"));
            }
         }
         return displayText;

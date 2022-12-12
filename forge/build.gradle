@@ -3,14 +3,20 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
-configurations {
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-}
+
 
 architectury {
     platformSetupLoomIde()
     forge()
 }
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+}
+
 loom{
     forge{
         mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
@@ -24,21 +30,29 @@ repositories {
     }
 }
 
+//dependencies {
+//    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+//    modRuntime "curse.maven:jei-238222:3566128"
+//    modRuntime "curse.maven:sophisticated-backpacks-422301:3555237"
+//    modRuntime "curse.maven:journeymap-32274:3556454"
+//
+//    implementation(project(path: ":common", configuration: "dev")) {
+//        transitive = false
+//    }
+//    developmentForge(project(path: ":common", configuration: "dev")) {
+//        transitive = false
+//    }
+//    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
+//        transitive = false
+//    }
+//}
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
-    modRuntime "curse.maven:jei-238222:3566128"
-    modRuntime "curse.maven:sophisticated-backpacks-422301:3555237"
-    modRuntime "curse.maven:journeymap-32274:3556454"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    implementation(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    developmentForge(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
-        transitive = false
-    }
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
 
 processResources {
@@ -51,6 +65,7 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
@@ -59,7 +74,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "forge"
+    classifier null
 }
 
 jar {
@@ -70,6 +85,12 @@ sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
 }
 
 publishing {

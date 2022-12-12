@@ -1,7 +1,8 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.0"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
+
 
 configurations {
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
@@ -11,31 +12,48 @@ architectury {
     platformSetupLoomIde()
     fabric()
 }
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
 repositories {
     maven { url "https://maven.siphalor.de/" }
 }
 
+//dependencies {
+//    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+//    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+//
+////    modRuntime "curse.maven:auto-config-updated-api-373261:3095961"
+////    modRuntime "curse.maven:dont-drop-it-390383:3554849"
+////    modRuntime "curse.maven:cloth-config-319057:3546620"
+//    //modRuntime "curse.maven:interactic-510974:3545805"
+//
+//    implementation(project(path: ":common", configuration: "dev")) {
+//        transitive = false
+//    }
+//    developmentFabric(project(path: ":common", configuration: "dev")) {
+//        transitive = false
+//    }
+//    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
+//        transitive = false
+//    }
+//}
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    modRuntime "curse.maven:auto-config-updated-api-373261:3095961"
-    modRuntime "curse.maven:dont-drop-it-390383:3554849"
-    modRuntime "curse.maven:cloth-config-319057:3546620"
-    //modRuntime "curse.maven:interactic-510974:3545805"
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
 
-    implementation(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    developmentFabric(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
-        transitive = false
-    }
-}
-minecraft {
-}
 processResources {
     inputs.property "version", project.version
 
@@ -45,14 +63,17 @@ processResources {
 }
 
 shadowJar {
+    exclude "architectury.common.json"
+
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
 
 remapJar {
+    injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    classifier null
 }
 
 jar {
@@ -63,6 +84,12 @@ sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
 }
 
 publishing {

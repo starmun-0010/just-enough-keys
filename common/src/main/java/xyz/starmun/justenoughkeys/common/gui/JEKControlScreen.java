@@ -6,7 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Option;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -113,26 +113,26 @@ public class JEKControlScreen extends KeyBindsScreen {
         }
         this.resetButton.active = Arrays.stream(this.options.keyMappings).anyMatch(keyMapping -> !keyMapping.isDefault());
 
-        drawCenteredString(poseStack,this.font, new TranslatableComponent("jek.controls.search.help.label"),this.width / 2, this.height-40,16777215);
+        drawCenteredString(poseStack,this.font, Component.translatable("jek.controls.search.help.label"),this.width / 2, this.height-40,16777215);
         this.search.render(poseStack, i, j, f);
         if (search.isMouseOver(i, j)) {
             renderTooltip(poseStack, this.toolTipComponent, Optional.empty(), i, j);
         }
-        drawString(poseStack,this.font, new TranslatableComponent("jek.controls.search.label"), this.width / 2 - 153, this.height - 60, 16777215);
+        drawString(poseStack,this.font, Component.translatable("jek.controls.search.label"), this.width / 2 - 153, this.height - 60, 16777215);
     }
 
     //Mostly copied over from the parent class
     private void initWidgets() {
-        labelWidth = Minecraft.getInstance().font.width(new TranslatableComponent("jek.controls.search.label"));
-        this.search = new EditBox(this.font, this.width / 2 - 153 + labelWidth + 5, this.height - 65, 300 - labelWidth, 18, new TextComponent(""));
+        labelWidth = Minecraft.getInstance().font.width(Component.translatable("jek.controls.search.label"));
+        this.search = new EditBox(this.font, this.width / 2 - 153 + labelWidth + 5, this.height - 65, 300 - labelWidth, 18, Component.literal(""));
         this.search.setMaxLength(200);
-        this.addRenderableWidget(new Button(this.width / 2 - 155, 18, 150, 20, new TranslatableComponent("options.mouse_settings"), (button) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 155, 18, 150, 20, Component.translatable("options.mouse_settings"), (button) -> {
             assert this.minecraft != null;
             this.minecraft.setScreen(new MouseSettingsScreen(this, this.options));
         }));
-        this.addRenderableWidget(Option.AUTO_JUMP.createButton(this.options, this.width / 2 - 155 + 160, 18, 150));
+        //this.addRenderableWidget(OptionInstance.AUTO_JUMP.createButton(this.options, this.width / 2 - 155 + 160, 18, 150));
         this.addWidget(search);
-        this.resetButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height - 29, 150, 20, new TranslatableComponent("controls.resetAll"), (button) -> {
+        this.resetButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height - 29, 150, 20, Component.translatable("controls.resetAll"), (button) -> {
             for (KeyMapping keyMapping : this.options.keyMappings) {
                 keyMapping.setKey(keyMapping.getDefaultKey());
                 ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().clear();
@@ -146,19 +146,19 @@ public class JEKControlScreen extends KeyBindsScreen {
         }));
 
 
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.title").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_AQUA)));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.description"));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.title").withStyle(ChatFormatting.GRAY));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.description"));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.title").withStyle(ChatFormatting.DARK_GRAY));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.filters.description"));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.title").withStyle(ChatFormatting.DARK_GRAY));
-        this.toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.searchby.description"));
-        toolTipComponent.add(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.prefix")
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.title").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_AQUA)));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.description"));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.title").withStyle(ChatFormatting.GRAY));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.description"));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.filters.title").withStyle(ChatFormatting.DARK_GRAY));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.filters.description"));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.searchby.title").withStyle(ChatFormatting.DARK_GRAY));
+        this.toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.searchby.description"));
+        toolTipComponent.add(Component.translatable("jek.controls.search.tooltip.advanced.example.prefix")
                 .withStyle(ChatFormatting.DARK_GRAY)
-                .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.query")
+                .append(Component.translatable("jek.controls.search.tooltip.advanced.example.query")
                 .withStyle(ChatFormatting.GOLD))
-                .append(new TranslatableComponent("jek.controls.search.tooltip.advanced.example.suffix")));
+                .append(Component.translatable("jek.controls.search.tooltip.advanced.example.suffix")));
     }
 
     @Override
