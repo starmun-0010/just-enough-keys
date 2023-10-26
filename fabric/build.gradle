@@ -25,9 +25,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
-    include "curse.maven:auto-config-updated-api-373261:3095961"
-    include "curse.maven:dont-drop-it-390383:3554849"
-    include "curse.maven:cloth-config-319057:3546620"
+    include "curse.maven:dont-drop-it-390383:4026541"
+    include "curse.maven:cloth-config-348521:3972420"
     //include "curse.maven:interactic-510974:3545805"
 
     implementation(project(path: ":common", configuration: "dev")) {
