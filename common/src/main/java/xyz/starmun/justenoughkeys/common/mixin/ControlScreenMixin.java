@@ -7,8 +7,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import xyz.starmun.justenoughkeys.common.contracts.IJEKControlScreenExtensions;
 
 @Mixin(KeyBindsScreen.class)
-public class ControlsScreenMixin implements IJEKControlScreenExtensions {
-
+public class ControlScreenMixin implements IJEKControlScreenExtensions {
     @Shadow
     private KeyBindsList keyBindsList;
 

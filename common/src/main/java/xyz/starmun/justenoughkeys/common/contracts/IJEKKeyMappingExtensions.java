@@ -12,17 +12,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface IJEKKeyMappingExtensions {
-
     InputConstants.Key jek$getKey();
 
     void jek$setClickCount(int i);
 
     int jek$getClickCount();
-    default ModifierKeyMap jek$getDefaultModifierKeyMap(){
+
+    default ModifierKeyMap jek$getDefaultModifierKeyMap() {
         return new ModifierKeyMap();
     }
-    default void setDefaultModifierKeyMap(ModifierKeyMap modifierKey){
+
+    default void setDefaultModifierKeyMap(ModifierKeyMap modifierKey) {
     }
+
     Map<String, KeyMapping> ALL = Maps.newHashMap();
     Map<InputConstants.Key, ConcurrentLinkedQueue<KeyMapping>> MAP = Maps.newHashMap();
     ModifierKeyMap CURRENT_PRESSED_MODIFIERS = new ModifierKeyMap();
@@ -31,6 +33,7 @@ public interface IJEKKeyMappingExtensions {
 
     static void initMAP(KeyMapping keyMapping) {
         InputConstants.Key key = ((IJEKKeyMappingExtensions) (keyMapping)).jek$getKey();
+
         if (!MAP.containsKey(key)) {
             MAP.put(key, new ConcurrentLinkedQueue<>(Collections.singleton(keyMapping)));
         } else {
@@ -50,6 +53,7 @@ public interface IJEKKeyMappingExtensions {
                 keyMappings.forEach(keyMapping -> keyMapping.setDown(false));
             }
         }
+
         getMatchingKeyMappings(key).forEach(keyMapping -> keyMapping.setDown(pressed));
     }
 
@@ -64,28 +68,39 @@ public interface IJEKKeyMappingExtensions {
 
     static void releaseAll() {
         CURRENT_PRESSED_MODIFIERS.clear();
-        MAP.values().stream().flatMap(Collection::stream).collect(Collectors.toList()).forEach((jekKeyMappings) -> jekKeyMappings.setDown(false));
+        MAP.values().stream().flatMap(Collection::stream).toList().forEach((jekKeyMappings) -> jekKeyMappings.setDown(false));
     }
 
     static void resetMapping() {
         KeyMapping.resetMapping();
+
         MAP.clear();
         ALL.values().forEach(IJEKKeyMappingExtensions::initMAP);
     }
 
     static Stream<KeyMapping> getMatchingKeyMappings(InputConstants.Key key) {
         Queue<KeyMapping> candidateKeys = MAP.get(key);
-        if (candidateKeys == null) return Stream.empty();
-        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping -> ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+
+        if (candidateKeys == null) {
+            return Stream.empty();
+        }
+
+        Set<KeyMapping> keyMappings = candidateKeys.stream().filter(keyMapping ->
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+
         if (keyMappings.isEmpty()) {
             return MAP.get(key).stream().filter(keyMapping -> !((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().any());
         } else {
             return keyMappings.stream();
         }
     }
+
     static Set<KeyMapping> getMatchingKeyMappingsWithModifiers(InputConstants.Key key) {
         Queue<KeyMapping> candidateKeys = MAP.get(key);
         if (candidateKeys == null) return new HashSet<>();
-        return candidateKeys.stream().filter(keyMapping ->((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().any() && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
+
+        return candidateKeys.stream().filter(keyMapping ->
+                ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().any()
+                        && ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().isPressed()).collect(Collectors.toSet());
     }
 }

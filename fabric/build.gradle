@@ -12,7 +12,6 @@ architectury {
     fabric()
 }
 repositories {
-    maven { url "https://maven.siphalor.de/" }
     maven {
         url = 'https://maven.minecraftforge.net/'
         content {
@@ -25,9 +24,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
-    include "curse.maven:dont-drop-it-390383:4026541"
-    include "curse.maven:cloth-config-348521:3972420"
-    //include "curse.maven:interactic-510974:3545805"
+    include "curse.maven:cloth-config-348521:4633442"
+    //include "curse.maven:dont-drop-it-390383:4026541"
+    //include "curse.maven:interactic-510974:4576411"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
@@ -49,17 +48,17 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier.set("dev-shadow")
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    archiveClassifier.set("fabric")
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier.set("dev")
 }
 
 sourcesJar {
@@ -90,7 +89,8 @@ publishing {
         }
     }
 }
-if(System.getenv('CURSE_DEPLOY')) {
+
+if (System.getenv('CURSE_DEPLOY')) {
     curseforge {
         apiKey = System.getenv('CURSE_DEPLOY')
         //noinspection GroovyAssignabilityCheck

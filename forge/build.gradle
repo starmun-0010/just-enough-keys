@@ -11,8 +11,9 @@ architectury {
     platformSetupLoomIde()
     forge()
 }
-loom{
-    forge{
+
+loom {
+    forge {
         mixinConfigs = ["justenoughkeys.mixins.json","justenoughkeys.mixin.forge.json"]
     }
 }
@@ -26,9 +27,9 @@ repositories {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
-    include "curse.maven:jei-238222:3566128"
-    include "curse.maven:sophisticated-backpacks-422301:3555237"
-    include "curse.maven:journeymap-32274:3556454"
+    //include "curse.maven:jei-238222:4712868"
+    //include "curse.maven:sophisticated-backpacks-422301:4808060"
+    //include "curse.maven:journeymap-32274:4774257"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
@@ -53,17 +54,18 @@ shadowJar {
     exclude "fabric.mod.json"
 
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier.set("dev-shadow")
+
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "forge"
+    archiveClassifier.set("forge")
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier.set("dev")
 }
 
 sourcesJar {
@@ -94,7 +96,8 @@ publishing {
         }
     }
 }
-if(System.getenv('CURSE_DEPLOY')) {
+
+if (System.getenv('CURSE_DEPLOY')) {
     curseforge {
         apiKey = System.getenv('CURSE_DEPLOY')
         //noinspection GroovyAssignabilityCheck

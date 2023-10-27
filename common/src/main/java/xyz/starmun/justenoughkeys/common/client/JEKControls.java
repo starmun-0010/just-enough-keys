@@ -12,7 +12,7 @@ public class JEKControls {
     static {
         dropStack = new JEKKeyMapping("key.justenoughkeys.dropstack",
                 new ModifierKeyMap(){{
-                    set(ModifierKey.KEYBOARD_LEFT_CONTROL,true);
+                    set(ModifierKey.KEYBOARD_LEFT_CONTROL, true);
                 }},
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_Q,"key.categories.inventory");

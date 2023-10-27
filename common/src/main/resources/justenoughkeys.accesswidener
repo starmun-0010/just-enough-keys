@@ -1,0 +1,4 @@
+accessWidener v1 named
+
+# for JEKControlList, because of package private method
+accessible method net/minecraft/client/gui/screens/controls/KeyBindsList$Entry refreshEntry ()V
