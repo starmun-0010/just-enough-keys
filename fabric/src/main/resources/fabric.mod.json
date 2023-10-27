@@ -20,10 +20,11 @@
     ],
     "client": ["xyz.starmun.justenoughkeys.fabric.JustEnoughKeysClientFabric"]
   },
+  "accessWidener": "justenoughkeys.accesswidener",
   "mixins": ["justenoughkeys.mixins.json","justenoughkeys.mixins.fabric.json"],
   "depends": {
     "fabricloader": ">=0.7.4",
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": ">=1.17.1"
   },
   "suggests": {

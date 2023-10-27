@@ -12,12 +12,12 @@ import xyz.starmun.justenoughkeys.common.data.ModifierKey;
 @Mixin(KeyboardHandler.class)
 public class KeyboardHandlerMixin {
 
-    @Inject(method = "keyPress", at=@At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;getWindow()J", shift = At.Shift.AFTER, ordinal = 0))
-    public void keyPress(long l, int i, int j, int k, int m, CallbackInfo ci){
+    @Inject(method = "keyPress", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;getWindow()J", shift = At.Shift.AFTER, ordinal = 0))
+    public void keyPress(long l, int i, int j, int k, int m, CallbackInfo ci) {
         InputConstants.Key key = InputConstants.getKey(i, j);
+
         if (ModifierKey.isModifierKey(key)) {
-            IJEKKeyMappingExtensions.CURRENT_PRESSED_MODIFIERS.set(key,  k==1);
+            IJEKKeyMappingExtensions.CURRENT_PRESSED_MODIFIERS.set(key,  k == 1);
         }
     }
-
 }

@@ -8,7 +8,7 @@ import xyz.starmun.justenoughkeys.common.client.JEKControls;
 public class JustEnoughKeysClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        if(Config.isCustomDropKeyFeatureEnabled()){
+        if (Config.isCustomDropKeyFeatureEnabled()) {
             KeyBindingHelper.registerKeyBinding(JEKControls.dropStack);
         }
     }

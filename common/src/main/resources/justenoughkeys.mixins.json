@@ -7,7 +7,7 @@
   "client": [
     "KeyMappingMixin",
     "OptionsSubScreenMixin",
-    "ControlsScreenMixin",
+    "ControlScreenMixin",
     "OptionsMixin",
     "MinecraftMixin",
     "CustomDropKeysMixin",

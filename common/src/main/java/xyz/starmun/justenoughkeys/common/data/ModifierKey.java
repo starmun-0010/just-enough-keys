@@ -48,20 +48,27 @@ public class ModifierKey {
 
     public static boolean isModifierKey(InputConstants.Key key) {
         int keyValue = key.getValue();
+
         return ModifierKey.isModifierKey(keyValue);
     }
+
     private static boolean isModifierKey(int value) {
      return value != UNKNOWN.value && MODIFIER_KEYS.containsKey(value);
     }
+
     public static ModifierKey modifierKeyFromValue(int value) {
-        if(!MODIFIER_KEYS.containsKey(value))return UNKNOWN;
+        if (!MODIFIER_KEYS.containsKey(value)) {
+            return UNKNOWN;
+        }
+
         return MODIFIER_KEYS.get(value);
     }
 
-    public String getName(){
+    public String getName() {
         return InputConstants.getKey(this.value,0).getName();
     }
-    public String getDisplayName(){
+
+    public String getDisplayName() {
         return InputConstants.getKey(this.value,0).getDisplayName().getString();
     }
 }

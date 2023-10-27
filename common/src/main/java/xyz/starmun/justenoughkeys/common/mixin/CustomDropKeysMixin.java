@@ -17,28 +17,29 @@ import xyz.starmun.justenoughkeys.common.client.JEKControls;
 
 @Mixin(Minecraft.class)
 public class CustomDropKeysMixin {
-
     @Shadow
     @Nullable
     public LocalPlayer player;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     public Options options;
 
     //Disable vanilla drop held item behaviour
-    @Redirect(method = "handleKeybinds", at=@At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
-    public boolean consumeDropClick(KeyMapping instance){
+    @Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
+    public boolean consumeDropClick(KeyMapping instance) {
         return false;
     }
-    @Inject(method = "handleKeybinds", at=@At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
-    public void handleDropKeys(CallbackInfo ci){
-        while(this.options.keyDrop.consumeClick()) {// 1675
+
+    @Inject(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 7))
+    public void handleDropKeys(CallbackInfo ci) {
+        while (this.options.keyDrop.consumeClick()) {// 1675
             assert this.player != null;
             if (!this.player.isSpectator() && this.player.drop(false)) {// 1676 1677
                 this.player.swing(InteractionHand.MAIN_HAND);// 1678
             }
         }
-        while (JEKControls.dropStack.consumeClick()){
+        while (JEKControls.dropStack.consumeClick()) {
             assert this.player != null;
             if (!this.player.isSpectator() && this.player.drop(true)) {// 1676 1677
                 this.player.swing(InteractionHand.MAIN_HAND);// 1678

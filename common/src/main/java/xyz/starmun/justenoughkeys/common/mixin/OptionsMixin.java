@@ -42,6 +42,7 @@ public class OptionsMixin {
     @ModifyVariable(method = "<init>", at = @At(value = "HEAD" ), argsOnly = true)
     private static File init(File file) {
         jekOptionsFile = new File(file.getPath(), "options." + JustEnoughKeys.MOD_ID + ".txt");
+
         return file;
     }
 
@@ -51,20 +52,21 @@ public class OptionsMixin {
             if (jekOptionsFile == null || !jekOptionsFile.exists()) {
                 return;
             }
-            //noinspection UnstableApiUsage
             try (BufferedReader bufferedReader = Files.newReader(jekOptionsFile, Charsets.UTF_8)) {
-                bufferedReader.lines().forEach((line) -> {
+                bufferedReader.lines().forEach(line -> {
                     try {
                         Iterator<String> lineIterator = OPTION_SPLITTER.split(line).iterator();
                         KeyMapping keyMapping = IJEKKeyMappingExtensions.ALL.get(lineIterator.next().replaceFirst("modifiers.", "").trim());
                         Iterator<String> valueIterator = VALUE_SPLITTER.split(lineIterator.next()).iterator();
                         ModifierKeyMap modifierKeyMapOfCurrentKeyParse = new ModifierKeyMap();
+
                         valueIterator.forEachRemaining(keyValue -> {
                             if (keyValue.trim().length() > 0 && modifierKeyMapOfCurrentKeyParse
                                     .set(InputConstants.getKey(keyValue.trim())) == ModifierKey.UNKNOWN) {
                                 JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
                             }
                         });
+
                         ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().set(modifierKeyMapOfCurrentKeyParse);
                     } catch (Exception ex) {
                         JustEnoughKeys.LOGGER.error("Skipping option: {}, could not load.", line);
@@ -76,18 +78,21 @@ public class OptionsMixin {
         } catch (Exception ex) {
             JustEnoughKeys.LOGGER.error("Could not load Just Enough Keys options file", ex);
         }
+
         IJEKKeyMappingExtensions.resetMapping();
     }
 
     @Inject(method = "save", at = @At("TAIL"))
     public void save(CallbackInfo ci) {
         try {
-
             try (PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(jekOptionsFile), StandardCharsets.UTF_8))) {
                 for (KeyMapping keyMapping : this.keyMappings) {
                     StringBuilder builder = new StringBuilder();
-                    ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().values().forEach(modifierKey -> builder.append(modifierKey.getName()).append(","));
-                    printWriter.println("modifiers." + keyMapping.getName() + ":" + (builder.length() > 0 ? builder.substring(0, builder.length() - 1) : ""));
+
+                    ((IJEKKeyMappingExtensions) keyMapping).jek$getModifierKeyMap().values()
+                            .forEach(modifierKey -> builder.append(modifierKey.getName()).append(","));
+                    printWriter.println("modifiers." + keyMapping.getName() + ":"
+                            + (builder.length() > 0 ? builder.substring(0, builder.length() - 1) : ""));
                 }
             } catch (Exception ex) {
                 JustEnoughKeys.LOGGER.error("Failed to save Just Enough Keys options file", ex);

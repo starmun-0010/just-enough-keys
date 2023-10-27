@@ -1,7 +1,7 @@
 package xyz.starmun.justenoughkeys.common.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,11 +18,13 @@ import java.util.List;
 public class ScreenMixin implements IJEKScreenExtensions {
     @Shadow
     @Final
-    private List<Widget> renderables;
+    private List<Renderable> renderables;
+
     @Override
-    public List<Widget> jek$getRenderables(){
+    public List<Renderable> jek$getRenderables(){
         return renderables;
     }
+
     @Inject(method = "keyPressed", at = @At("TAIL"), cancellable = true)
     public void keyPressed(int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
         if (ModifierKey.isModifierKey(InputConstants.getKey(i, j))) {

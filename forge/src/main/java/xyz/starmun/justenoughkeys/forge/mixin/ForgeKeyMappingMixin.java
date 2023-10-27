@@ -38,7 +38,7 @@ public abstract class ForgeKeyMappingMixin implements Comparable<KeyMapping>, IF
     }
 
     @Override
-    public boolean isActiveAndMatches(InputConstants.Key keyCode) {
+    public boolean isActiveAndMatches(InputConstants.@NotNull Key keyCode) {
 
         return keyCode != InputConstants.UNKNOWN
                 && keyCode.equals(getKey())

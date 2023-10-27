@@ -10,6 +10,10 @@ architectury {
     common()
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/justenoughkeys.accesswidener")
+}
+
 configurations {
     dev
 }

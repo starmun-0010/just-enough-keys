@@ -13,8 +13,9 @@ public class OptionsSubScreenMixin extends Screen   {
     }
 
     @Override
-    public void removed(){
-        if(this.minecraft!=null && this.minecraft.options != null)this.minecraft.options.save();
+    public void removed() {
+        if (this.minecraft != null && this.minecraft.options != null) {
+            this.minecraft.options.save();
+        }
     }
-
 }
